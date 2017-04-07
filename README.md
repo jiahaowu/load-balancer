@@ -9,6 +9,9 @@ Slang:
 http://dspcad.slack.com
 
 Important dates:
+
 interim report - April 21, 6PM
+
 demos - May 4 and 9, in class
+
 final report - due May 12, 6PM

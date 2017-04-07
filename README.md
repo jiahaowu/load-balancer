@@ -1,5 +1,5 @@
-CMSC714 FINAL PROJECT
-Name: load-balancer
+CMSC714 FINAL PROJECT (load-balancer)
+
 Kyunghun Lee, Jiahao Wu, Honglei Li
 
 Project Proposal:

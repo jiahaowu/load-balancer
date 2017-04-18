@@ -1,0 +1,9 @@
+#git add .gitignore
+#git commit -m '.DS_Store banished!'
+.DS_Store
+*.a
+*.exe
+*.o
+*.d
+autotest-output
+modelsim.ini

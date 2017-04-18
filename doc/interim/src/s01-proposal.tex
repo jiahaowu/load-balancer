@@ -1,0 +1,34 @@
+We plan to take advantage of multiple different platform at the same by
+scheduling at compile- time. We can cluster different machines together in a
+network, and clustered machines can be used for running MPI-based programs or
+socket communication directly.
+
+Unlike the deepthought2 cluster equipped with nodes of consistent performance,
+we might have multiple machines which have different performances. We are
+interested in how to combine the computing power of all the machines
+efficiently. Evenly distribute work loads to those machines might not be
+efficient on machines which have different performances, and we want to
+develop a framework to automatically distribute task based on each machine's
+performance.
+
+For the approach, we plan to write some computing intensive kernels like
+floating point computation and use OpenMP to make full use of all cores on
+each machine. If time allowed, we can explore more complex dataflow
+application. Then the expected result from our project is an automation tool,
+that can distribute tasks to all machines and the execution time of all
+machines should be as close as possible.
+
+Overall framework is like this:
+
+% To avoide Error, I included on bib.
+~\cite{lee2017x3}
+\begin{enumerate}
+\item Cluster different machines in a Network.
+\item Evaluate the performance of each node.
+\item Calculate the loading size on each node.
+\item Divide the data into different sockets according to the loading size.
+\item Send the sockets from the master to the slaves.
+\item Do the computation jobs on each node.
+\item Prepare the result socket after the job finished.
+\item Send the socket back to master.
+\end{enumerate}

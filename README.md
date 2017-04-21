@@ -11,6 +11,7 @@ http://dspcad.slack.com
 Important dates:
 
 interim report - April 21, 6PM
+https://docs.google.com/document/d/1B6i5bq-_xxUyA7HKqG2qAewin-0cMqh3RB6zLT0IPtQ/edit?usp=sharing
 
 demos - May 4 and 9, in class
 

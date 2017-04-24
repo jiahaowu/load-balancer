@@ -16,3 +16,9 @@ https://docs.google.com/document/d/1B6i5bq-_xxUyA7HKqG2qAewin-0cMqh3RB6zLT0IPtQ/
 demos - May 4 and 9, in class
 
 final report - due May 12, 6PM
+
+
+
+Final Study
+
+https://docs.google.com/document/d/1QzuN0ngutUoS5yN4Mhv1FWRd4GGlc7I1rAJ93VoK2Bc/edit?usp=sharing

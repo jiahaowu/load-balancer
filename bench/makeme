@@ -4,8 +4,8 @@
 unamestr=`uname`
 
 if [[ "$unamestr" == 'Linux' ]]; then
-   gcc -fopenmp -o benchmark.exe benchmark.c -lm
+   gcc -fopenmp -o sgefa_openmp.exe sgefa_openmp.c -lm
 elif [[ "$unamestr" == 'Darwin' ]]; then
-   gcc-6 -fopenmp -o benchmark.exe benchmark.c -lm
+   gcc-6 -fopenmp -o sgefa_openmp.exe sgefa_openmp.c -lm
 fi
  

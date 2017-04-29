@@ -1,8 +1,8 @@
 package com.jiahaowu.balancer.server;
 
-import com.jiahaowu.balancer.server.comm.ConnectionServiceGrpc;
-import com.jiahaowu.balancer.server.comm.JoinRequest;
-import com.jiahaowu.balancer.server.comm.JoinResponse;
+import com.jiahaowu.balancer.protocol.ConnectionServiceGrpc;
+import com.jiahaowu.balancer.protocol.JoinRequest;
+import com.jiahaowu.balancer.protocol.JoinResponse;
 import io.grpc.stub.StreamObserver;
 
 public class JoinService extends ConnectionServiceGrpc.ConnectionServiceImplBase {

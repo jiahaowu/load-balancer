@@ -1,1 +1,1 @@
-rm -f benchmark.exe
+rm -f  sgefa_openmp.exe

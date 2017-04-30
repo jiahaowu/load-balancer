@@ -1,12 +1,26 @@
 group 'com.jiahaowu.balancer'
 version '1.0-SNAPSHOT'
 
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        // ASSUMES GRADLE 2.12 OR HIGHER. Use plugin version 0.7.5 with earlier
+        // gradle versions
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.0'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'com.google.protobuf'
 apply plugin: 'idea'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceCompatibility = 1.8
-
 
 idea {
     module {
@@ -17,16 +31,7 @@ idea {
     }
 }
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        // ASSUMES GRADLE 2.12 OR HIGHER. Use plugin version 0.7.5 with earlier
-        // gradle versions
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.0'
-    }
-}
+
 
 protobuf {
     protoc {
@@ -48,10 +53,23 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'io.grpc:grpc-netty:1.2.0'
     compile 'io.grpc:grpc-protobuf:1.2.0'
     compile 'io.grpc:grpc-stub:1.2.0'
     compile "com.beust:jcommander:1.48"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.jiahaowu.balancer.Launcher'
+    }
+}
+
+shadowJar {
+    baseName = 'controller'
+    classifier = null
+    version = null
 }

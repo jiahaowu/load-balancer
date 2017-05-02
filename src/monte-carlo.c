@@ -15,16 +15,13 @@
 #include <openssl/rand.h>
 
 #define NUM_RAND 500000
+#define NUM_REPEAT 100
 
 #ifndef PI
 #  define PI 3.141592653589793238
 #endif
 
 int my_cpu_id,numthreads;
-
-  // double totaltime=0;
-  // struct timeval  tv1, tv2;
-  // gettimeofday(&tv1, NULL);
 
   //   gettimeofday(&tv2, NULL);
   //   totaltime = (double) (tv2.tv_usec - tv1.tv_usec) / 1000000 +
@@ -34,13 +31,19 @@ int my_cpu_id,numthreads;
 
 int main(int argc, char **argv)
 {
-    int i, randInt_A, randInt_B;
+    int i,j,randInt_A, randInt_B;
     int randInts_A[NUM_RAND], randInts_B[NUM_RAND];
     int count = 0;
     double radius;
     double rand_double_A, rand_double_B;
     double pi_result;
 
+    /* Measure runtime */
+    double totaltime=0;
+    struct timeval  tv1, tv2;
+    gettimeofday(&tv1, NULL);
+
+    for (j=0; j<NUM_REPEAT; j++) {
     /* One way to get random integers -- full range */
     if( !(RAND_pseudo_bytes((unsigned char *)randInts_A, sizeof(randInts_A)))) {
     printf("ERROR: call to RAND_pseudo_bytes() failed\n");
@@ -65,9 +68,14 @@ int main(int argc, char **argv)
     if (radius < 1) count++;
     //printf("Random Integer: %d, Random double: %lf\n", randInt, rand_double);
     }
+}
 
-    pi_result = count / (double) NUM_RAND * 4;
+    gettimeofday(&tv2, NULL);
+    totaltime = (double) (tv2.tv_usec - tv1.tv_usec) / 1000000 +
+            (double) (tv2.tv_sec - tv1.tv_sec);
+    printf("average runtime is %lf\n",totaltime);
 
+    pi_result = count / (double) NUM_RAND * 4 / NUM_REPEAT;
     printf("calculated PI: %lf\n", pi_result);
 
     // #ifdef _OPENMP

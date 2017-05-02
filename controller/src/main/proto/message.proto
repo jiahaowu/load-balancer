@@ -7,27 +7,20 @@ package comm;
 
 service ConnectionService {
     // allow nodes join the cluster
-    rpc JoinCluster(JoinRequest) returns(JoinResponse) {}
-}
-
-message JoinRequest {
-    string hostname = 1;
-    string ipAddr = 2;
-    double performance = 3;
+    rpc JoinCluster (ComputingNode) returns (JoinResponse) {
+    }
 }
 
 message JoinResponse {
-    int32 id = 1;
-    int32 nodeCount = 2;
+    int32 nodeCount = 1;
 }
 
 message ComputingNode {
-    int32 id = 1;
     string hostname = 2;
     string ipAddr = 3;
     double performance = 4;
 }
 
 message Cluster {
-    repeated ComputingNode nodes = 1;
+    repeated ComputingNode nodeList = 2;
 }

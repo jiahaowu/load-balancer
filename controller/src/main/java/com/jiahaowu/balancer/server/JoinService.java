@@ -1,10 +1,9 @@
 package com.jiahaowu.balancer.server;
 
-import com.jiahaowu.balancer.protocol.Cluster;
-import com.jiahaowu.balancer.protocol.ConnectionServiceGrpc;
-import com.jiahaowu.balancer.protocol.JoinRequest;
-import com.jiahaowu.balancer.protocol.JoinResponse;
+import com.jiahaowu.balancer.protocol.*;
 import io.grpc.stub.StreamObserver;
+
+import java.util.ArrayList;
 
 /**
  * Created by jiahao on 5/1/17.
@@ -12,20 +11,23 @@ import io.grpc.stub.StreamObserver;
  */
 
 public class JoinService extends ConnectionServiceGrpc.ConnectionServiceImplBase {
-    private Cluster cluster;
+    private Cluster.Builder clusterBuilder;
 
-    public void JoinService(Cluster cluster) {
-        this.cluster = cluster;
+    public JoinService(Cluster.Builder clusterBuilder) {
+        this.clusterBuilder = clusterBuilder;
     }
 
     @Override
-    public void joinCluster(JoinRequest request, StreamObserver<JoinResponse> responseObserver) {
+    public void joinCluster(ComputingNode request, StreamObserver<JoinResponse> responseObserver) {
         System.out.println("Join request received from " + request.getHostname());
+        // retrieve node info
+
+        clusterBuilder.addNodeList(request);
+
         JoinResponse response = JoinResponse.newBuilder()
-                .setId(0).setNodeCount(0).build();
+                .setNodeCount(clusterBuilder.getNodeListCount()).build();
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
-
     }
 }

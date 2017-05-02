@@ -1,0 +1,13 @@
+#!/bin/bash
+# MAC: please install openssl using "brew install openssl"
+
+
+./cleanme
+unamestr=`uname`
+
+if [[ "$unamestr" == 'Linux' ]]; then
+   gcc -fopenmp -o monte-carlo.exe monte-carlo.c -lm
+elif [[ "$unamestr" == 'Darwin' ]]; then
+   gcc-6 -I /usr/local/include/ -fopenmp -o monte-carlo.exe monte-carlo.c 
+fi
+ 

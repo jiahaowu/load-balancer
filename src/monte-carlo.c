@@ -1,8 +1,13 @@
+// Random Generator Reference
+// https://www.mitchr.me/SS/exampleCode/random/opensslPRandEx.c.html
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
 #include <omp.h>
+#include <limits.h>
 
 #include <unistd.h>
 #include <time.h>
@@ -32,6 +37,7 @@ int main(int argc, char **argv)
 {
     int i, randInt;
     int randInts[10];
+    double rand_double;
 
     /* One way to get random integers -- full range */
     if( !(RAND_pseudo_bytes((unsigned char *)randInts, sizeof(randInts)))) {
@@ -39,12 +45,13 @@ int main(int argc, char **argv)
     exit(1);
     }
 
-
+    printf("sizeof readInts: %d\n", sizeof(randInts));
     /* Print out our random integers.  Note we abs() them to fold into non-negative integers.  One might also wish to exclude 0 from
     the stream for obvious reasons */
     for(i=1; i<10; i++) {
     randInt = abs(randInts[i]);
-    printf("Random Integer: %d\n", randInt);
+    rand_double = randInt / (double)INT_MAX;
+    printf("Random Integer: %d, Random double: %lf\n", randInt, rand_double);
     }
 
     #ifdef _OPENMP
@@ -53,10 +60,10 @@ int main(int argc, char **argv)
     numthreads=1;
     #endif
 
-    printf("numthreads = %d\n", numthreads);
+    // printf("numthreads = %d\n", numthreads);
 
 
-    printf("rand:%d\n", rand());
+    // printf("rand:%d\n", rand());
 
 return 0;
 }

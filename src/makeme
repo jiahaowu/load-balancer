@@ -8,6 +8,7 @@ unamestr=`uname`
 if [[ "$unamestr" == 'Linux' ]]; then
    gcc -fopenmp -o monte-carlo.exe monte-carlo.c -lm -lcrypto -lssl
 elif [[ "$unamestr" == 'Darwin' ]]; then
-   gcc-6 -I /usr/local/include/ -fopenmp -o monte-carlo.exe monte-carlo.c 
+   gcc-6 -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib -fopenmp -o monte-carlo.exe monte-carlo.c -lm -lcrypto -lssl
 fi
  
+# -I /usr/local/include/ 

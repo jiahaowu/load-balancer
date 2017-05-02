@@ -2,6 +2,8 @@ package com.jiahaowu.balancer;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.jiahaowu.balancer.client.ClusterClient;
+import com.jiahaowu.balancer.server.ClusterServer;
 
 /**
  * Created by jiahao on 4/28/17.
@@ -15,10 +17,16 @@ public class Launcher {
     private boolean help = false;
 
     @Parameter(names = {"-m", "--mode"}, description = "Mode of this controller instance")
-    private String state = STATS[1];
+    private String state = STATS[2];
 
-    @Parameter(names = {"-s", "--server"}, description = "IP / Domain of the Server Node / Coordinator")
+    @Parameter(names = {"-s", "--clusterServer"}, description = "IP / Domain of the ClusterServer Node / Coordinator")
     private String serverAddr = "127.0.0.1";
+
+    @Parameter(names = {"-p", "--port"}, description = "Port number the clusterServer listens on")
+    private Integer port = 8800;
+
+    private ClusterClient clusterClient;
+    private ClusterServer clusterServer;
 
     public static void main(String[] args) {
         Launcher main = new Launcher();
@@ -30,10 +38,12 @@ public class Launcher {
         }
 
         if (main.state.equals(STATS[1])) {
-            // Launcher starts the server mode
+            // Launcher starts the clusterServer mode
+            main.clusterServer = new ClusterServer(main.port);
 
-        } else if (main.state.equals(STATS[2])){
-            // Launcher starts the client mode
+        } else if (main.state.equals(STATS[2])) {
+            // Launcher starts the clusterClient mode
+            main.clusterClient = new ClusterClient(main.serverAddr, main.port);
 
         }
     }

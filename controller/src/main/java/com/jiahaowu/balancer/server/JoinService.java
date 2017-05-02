@@ -1,5 +1,6 @@
 package com.jiahaowu.balancer.server;
 
+import com.jiahaowu.balancer.protocol.Cluster;
 import com.jiahaowu.balancer.protocol.ConnectionServiceGrpc;
 import com.jiahaowu.balancer.protocol.JoinRequest;
 import com.jiahaowu.balancer.protocol.JoinResponse;
@@ -11,6 +12,12 @@ import io.grpc.stub.StreamObserver;
  */
 
 public class JoinService extends ConnectionServiceGrpc.ConnectionServiceImplBase {
+    private Cluster cluster;
+
+    public void JoinService(Cluster cluster) {
+        this.cluster = cluster;
+    }
+
     @Override
     public void joinCluster(JoinRequest request, StreamObserver<JoinResponse> responseObserver) {
         System.out.println("Join request received from " + request.getHostname());

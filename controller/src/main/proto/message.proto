@@ -29,5 +29,5 @@ message ComputingNode {
 }
 
 message Cluster {
-    repeated ComputingNode nodeList = 1;
+    repeated ComputingNode nodes = 1;
 }

@@ -57,40 +57,41 @@ int main ( void )
 
   timestamp ( );
 
-  // printf ( "\n" );
-  // printf ( "SGEFA_OPENMP\n" );
-  // printf ( "  C + OpenMP version\n" );
+  printf ( "\n" );
+  printf ( "SGEFA_OPENMP\n" );
+  printf ( "  C + OpenMP version\n" );
 
-  // printf ( "\n" );
-  // printf ( "  Number of processors available = %d\n", omp_get_num_procs ( ) );
-  // printf ( "  Number of threads =              %d\n", omp_get_max_threads ( ) );
+  printf ( "\n" );
+  printf ( "  Number of processors available = %d\n", omp_get_num_procs ( ) );
+  printf ( "  Number of threads =              %d\n", omp_get_max_threads ( ) );
 
-  // printf ( "\n" );
-  // printf ( " Algorithm        Mode          N    Error       Time\n" );
+  printf ( "\n" );
+  printf ( " Algorithm        Mode          N    Error       Time\n" );
 
-  // printf ( "\n" );
-  // n = 10;
-  // test01 ( n );
-  // test02 ( n );
-  // test03 ( n );
-
-  // printf ( "\n" );
-  // n = 100;
-  // test01 ( n );
-  // test02 ( n );
-  // test03 ( n );
-  // printf ( "\n" );
-  n = 100;
-  // test01 ( n );
+  printf ( "\n" );
+  n = 10;
+  test01 ( n );
   test02 ( n );
-  // test03 ( n );
+  test03 ( n );
 
-  // printf ( "\n" );
-  // // printf ( "SGEFA_OPENMP\n" );
-  // printf ( "  Normal end of execution.\n" );
+  printf ( "\n" );
+  n = 100;
+  test01 ( n );
+  test02 ( n );
+  test03 ( n );
 
-  // printf ( "\n" );
-  // timestamp ( );
+  printf ( "\n" );
+  n = 1000;
+  test01 ( n );
+  test02 ( n );
+  test03 ( n );
+
+  printf ( "\n" );
+  printf ( "SGEFA_OPENMP\n" );
+  printf ( "  Normal end of execution.\n" );
+
+  printf ( "\n" );
+  timestamp ( );
 
   return 0;
 }
@@ -234,9 +235,7 @@ void test02 ( int n )
     err = err + fabs ( x[i] - b[i] );
   }
 
-  //printf ( "  Revised     Parallel   %8d  %10.4e  %10.4e\n", n, err, wtime );
-  printf ("Runtime: %10.4e\n", wtime);
-  printf("Benchmark Score: %10.4e\n", 1/wtime);
+  printf ( "  Revised     Parallel   %8d  %10.4e  %10.4e\n", n, err, wtime );
 
   free ( a );
   free ( b );
@@ -294,9 +293,9 @@ void test03 ( int n )
 
   if ( info != 0 )
   {
-    //printf ( "\n" );
-    //printf ( "TEST03 - Fatal error!\n" );
-    //printf ( "  MSGEFA2 reports the matrix is singular.\n" );
+    printf ( "\n" );
+    printf ( "TEST03 - Fatal error!\n" );
+    printf ( "  MSGEFA2 reports the matrix is singular.\n" );
     exit ( 1 );
   }
 /*
@@ -311,7 +310,7 @@ void test03 ( int n )
     err = err + fabs ( x[i] - b[i] );
   }
 
-  //printf ( "  Revised   Sequential   %8d  %10.4e  %10.4e\n", n, err, wtime );
+  printf ( "  Revised   Sequential   %8d  %10.4e  %10.4e\n", n, err, wtime );
 
   free ( a );
   free ( b );

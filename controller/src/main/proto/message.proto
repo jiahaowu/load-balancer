@@ -12,7 +12,8 @@ service ConnectionService {
 
 message JoinRequest {
     string hostname = 1;
-    double performance = 2;
+    string ipAddr = 2;
+    double performance = 3;
 }
 
 message JoinResponse {
@@ -20,5 +21,13 @@ message JoinResponse {
     int32 nodeCount = 2;
 }
 
+message ComputingNode {
+    int32 id = 1;
+    string hostname = 2;
+    string ipAddr = 3;
+    double performance = 4;
+}
 
-
+message Cluster {
+    repeated ComputingNode nodeList = 1;
+}

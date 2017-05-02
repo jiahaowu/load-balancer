@@ -1,11 +1,16 @@
 package com.jiahaowu.balancer.client;
 
-
 import com.jiahaowu.balancer.protocol.ConnectionServiceGrpc;
 import com.jiahaowu.balancer.protocol.JoinRequest;
 import com.jiahaowu.balancer.protocol.JoinResponse;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+
+
+/**
+ * Created by jiahao on 5/1/17.
+ *
+ */
 
 public class ClientLauncher {
     private static final String HOST = "192.168.1.240";

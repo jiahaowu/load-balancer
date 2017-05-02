@@ -1,7 +1,6 @@
 // Random Generator Reference
 // https://www.mitchr.me/SS/exampleCode/random/opensslPRandEx.c.html
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -14,8 +13,8 @@
 #include <sys/time.h>
 #include <openssl/rand.h>
 
-#define NUM_RAND 50000
-#define NUM_REPEAT 100
+#define NUM_RAND 100000
+#define NUM_REPEAT 300
 
 #ifndef PI
 #  define PI 3.141592653589793238
@@ -45,7 +44,7 @@ int main(int argc, char **argv)
     struct timeval  tv1, tv2;
     gettimeofday(&tv1, NULL);
 
-    printf("numthreads: %d\n",numthreads);
+    // printf("numthreads: %d\n",numthreads);
     for (i=0; i<numthreads; i++) {
         count[i] = 0;
     }
@@ -62,9 +61,6 @@ int main(int argc, char **argv)
     exit(1);
     }
 
-    /* Print out our random integers.  Note we abs() them to fold into non-negative integers.  One might also wish to exclude 0 from
-    the stream for obvious reasons */
-
       #pragma omp parallel private(i, my_cpu_id)
       {
         #ifdef _OPENMP
@@ -76,18 +72,17 @@ int main(int argc, char **argv)
         #pragma omp for
         for(i=1; i<NUM_RAND; i++) {
     
-        rand_double_A[i] = abs(randInts_A[i]) / (double)INT_MAX;
-        rand_double_B[i] = abs(randInts_B[i]) / (double)INT_MAX;
+        rand_double_A[i] = randInts_A[i] / (double)INT_MAX;
+        rand_double_B[i] = randInts_B[i] / (double)INT_MAX;
 
         radius[i] = rand_double_A[i]*rand_double_A[i] + rand_double_B[i]*rand_double_B[i];
-        if (radius[i] < 1) count[my_cpu_id]++;
+        if (radius[i] <= 1) count[my_cpu_id]++;
         //printf("Random Integer: %d, Random double: %lf\n", randInt, rand_double);
         }
       }
     }
     
     for (i=0;i<numthreads;i++) {      
-        //printf("count[%d]: %d\n",i,count[i]);
         count_total += count[i];
     }
 

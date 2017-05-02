@@ -14,8 +14,7 @@
 #include <sys/time.h>
 #include <openssl/rand.h>
 
-#define AMAX_NAME  128
-#define CHUNK 128
+#define NUM_RAND 500000
 
 #ifndef PI
 #  define PI 3.141592653589793238
@@ -35,30 +34,47 @@ int my_cpu_id,numthreads;
 
 int main(int argc, char **argv)
 {
-    int i, randInt;
-    int randInts[10];
-    double rand_double;
+    int i, randInt_A, randInt_B;
+    int randInts_A[NUM_RAND], randInts_B[NUM_RAND];
+    int count = 0;
+    double radius;
+    double rand_double_A, rand_double_B;
+    double pi_result;
 
     /* One way to get random integers -- full range */
-    if( !(RAND_pseudo_bytes((unsigned char *)randInts, sizeof(randInts)))) {
+    if( !(RAND_pseudo_bytes((unsigned char *)randInts_A, sizeof(randInts_A)))) {
     printf("ERROR: call to RAND_pseudo_bytes() failed\n");
     exit(1);
     }
 
-    printf("sizeof readInts: %d\n", sizeof(randInts));
-    /* Print out our random integers.  Note we abs() them to fold into non-negative integers.  One might also wish to exclude 0 from
-    the stream for obvious reasons */
-    for(i=1; i<10; i++) {
-    randInt = abs(randInts[i]);
-    rand_double = randInt / (double)INT_MAX;
-    printf("Random Integer: %d, Random double: %lf\n", randInt, rand_double);
+    if( !(RAND_pseudo_bytes((unsigned char *)randInts_B, sizeof(randInts_B)))) {
+    printf("ERROR: call to RAND_pseudo_bytes() failed\n");
+    exit(1);
     }
 
-    #ifdef _OPENMP
-    numthreads=omp_get_max_threads();
-    #else
-    numthreads=1;
-    #endif
+    /* Print out our random integers.  Note we abs() them to fold into non-negative integers.  One might also wish to exclude 0 from
+    the stream for obvious reasons */
+    for(i=1; i<NUM_RAND; i++) {
+    randInt_A = abs(randInts_A[i]);
+    randInt_B = abs(randInts_B[i]);
+    
+    rand_double_A = randInt_A / (double)INT_MAX;
+    rand_double_B = randInt_B / (double)INT_MAX;
+
+    radius = rand_double_A*rand_double_A + rand_double_B*rand_double_B;
+    if (radius < 1) count++;
+    //printf("Random Integer: %d, Random double: %lf\n", randInt, rand_double);
+    }
+
+    pi_result = count / (double) NUM_RAND * 4;
+
+    printf("calculated PI: %lf\n", pi_result);
+
+    // #ifdef _OPENMP
+    // numthreads=omp_get_max_threads();
+    // #else
+    // numthreads=1;
+    // #endif
 
     // printf("numthreads = %d\n", numthreads);
 

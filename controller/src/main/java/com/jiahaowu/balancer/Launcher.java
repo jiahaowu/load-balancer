@@ -5,6 +5,8 @@ import com.beust.jcommander.Parameter;
 import com.jiahaowu.balancer.client.ClusterClient;
 import com.jiahaowu.balancer.server.ClusterServer;
 
+import java.io.IOException;
+
 /**
  * Created by jiahao on 4/28/17.
  * <p>
@@ -17,13 +19,16 @@ public class Launcher {
     private boolean help = false;
 
     @Parameter(names = {"-m", "--mode"}, description = "Mode of this controller instance")
-    private String state = STATS[2];
+    private String state = STATS[1];
 
     @Parameter(names = {"-s", "--clusterServer"}, description = "IP / Domain of the ClusterServer Node / Coordinator")
     private String serverAddr = "127.0.0.1";
 
     @Parameter(names = {"-p", "--port"}, description = "Port number the clusterServer listens on")
     private Integer port = 8800;
+
+    @Parameter(names = {"-e", "--performance"}, description = "Performance parameter for the node")
+    private Double performance = 1.0;
 
     private ClusterClient clusterClient;
     private ClusterServer clusterServer;
@@ -37,13 +42,20 @@ public class Launcher {
             return;
         }
 
-        if (main.state.equals(STATS[1])) {
+        if (main.state.equals(STATS[0])) {
             // Launcher starts the clusterServer mode
             main.clusterServer = new ClusterServer(main.port);
+            try {
+                main.clusterServer.start();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
 
-        } else if (main.state.equals(STATS[2])) {
+        } else if (main.state.equals(STATS[1])) {
             // Launcher starts the clusterClient mode
-            main.clusterClient = new ClusterClient(main.serverAddr, main.port);
+            main.clusterClient = new ClusterClient(main.serverAddr, main.port, main.performance);
+            main.clusterClient.joinCluster();
+            main.clusterClient.shutdown();
 
         }
     }

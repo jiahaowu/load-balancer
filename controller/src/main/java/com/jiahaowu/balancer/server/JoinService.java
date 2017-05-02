@@ -20,9 +20,11 @@ public class JoinService extends ConnectionServiceGrpc.ConnectionServiceImplBase
     @Override
     public void joinCluster(ComputingNode request, StreamObserver<JoinResponse> responseObserver) {
         System.out.println("Join request received from " + request.getHostname());
-        // retrieve node info
+        System.out.println(request);
 
-        clusterBuilder.addNodeList(request);
+        synchronized (clusterBuilder) {
+            clusterBuilder.addNodeList(request);
+        }
 
         JoinResponse response = JoinResponse.newBuilder()
                 .setNodeCount(clusterBuilder.getNodeListCount()).build();

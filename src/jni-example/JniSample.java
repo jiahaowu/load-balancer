@@ -7,12 +7,16 @@ public class JniSample {
     
     public static void main(String[] args) {
 
-        System.out.println("In java main");
-        
-        //int a=s.sayHello(7);
-        int a = new JniSample().sayHello(10000,3);
-        System.out.println(a);
+        int num_rand = 10000;
+        int num_repeat = 3;
 
+        int count_total = new JniSample().sayHello(num_rand,num_repeat);
+
+        double pi_result = count_total /(double) num_rand / num_repeat * 4 ;
+
+        System.out.println("Total Random Number:"+num_rand);
+        System.out.println("Repeated:"+num_repeat);
+        System.out.println("Calculated PI:"+pi_result);
         
     }
 }

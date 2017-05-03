@@ -13,12 +13,8 @@
 #include <sys/time.h>
 #include <openssl/rand.h>
 
-#define NUM_RAND 100000
-#define NUM_REPEAT 300
-
-#ifndef PI
-#  define PI 3.141592653589793238
-#endif
+#define NUM_RAND 10000000
+#define NUM_REPEAT 10
 
 int main(int argc, char **argv)
 {
@@ -32,11 +28,11 @@ int main(int argc, char **argv)
     #endif
     
     int i,j;
-    int randInts_A[NUM_RAND], randInts_B[NUM_RAND];
+    int randInts_A[1], randInts_B[1];
     int count[numthreads];
     int count_total = 0;
-    double radius[NUM_RAND];
-    double rand_double_A[NUM_RAND], rand_double_B[NUM_RAND];
+    double radius;
+    double rand_double_A, rand_double_B;
     double pi_result;
 
     /* Measure runtime */
@@ -49,19 +45,8 @@ int main(int argc, char **argv)
         count[i] = 0;
     }
 
-    for (j=0; j<NUM_REPEAT; j++) {
-    /* One way to get random integers -- full range */
-    if( !(RAND_pseudo_bytes((unsigned char *)randInts_A, sizeof(randInts_A)))) {
-    printf("ERROR: call to RAND_pseudo_bytes() failed\n");
-    exit(1);
-    }
-
-    if( !(RAND_pseudo_bytes((unsigned char *)randInts_B, sizeof(randInts_B)))) {
-    printf("ERROR: call to RAND_pseudo_bytes() failed\n");
-    exit(1);
-    }
-
-      #pragma omp parallel private(i, my_cpu_id)
+	for (j=0; j<NUM_REPEAT; j++) {
+      #pragma omp parallel private(my_cpu_id)
       {
         #ifdef _OPENMP
         my_cpu_id=omp_get_thread_num();
@@ -71,15 +56,25 @@ int main(int argc, char **argv)
         
         #pragma omp for
         for(i=1; i<NUM_RAND; i++) {
-    
-        rand_double_A[i] = randInts_A[i] / (double)INT_MAX;
-        rand_double_B[i] = randInts_B[i] / (double)INT_MAX;
+ 
+		/* One way to get random integers -- full range */
+		if( !(RAND_pseudo_bytes((unsigned char *)randInts_A,sizeof(randInts_A)))) {
+		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
+		exit(1);
+		}
+		if( !(RAND_pseudo_bytes((unsigned char *)randInts_B, sizeof(randInts_B)))) {
+		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
+		exit(1);
+		}
 
-        radius[i] = rand_double_A[i]*rand_double_A[i] + rand_double_B[i]*rand_double_B[i];
-        if (radius[i] <= 1) count[my_cpu_id]++;
+        rand_double_A = randInts_A[0] / (double)INT_MAX;
+        rand_double_B = randInts_B[0] / (double)INT_MAX;
+
+        radius = rand_double_A * rand_double_A + rand_double_B *rand_double_B;
+        if (radius <= 1) count[my_cpu_id]++;
         //printf("Random Integer: %d, Random double: %lf\n", randInt, rand_double);
         }
-      }
+	  }
     }
     
     for (i=0;i<numthreads;i++) {      
@@ -91,7 +86,7 @@ int main(int argc, char **argv)
             (double) (tv2.tv_sec - tv1.tv_sec);
     printf("average runtime is %lf\n",totaltime);
 
-    pi_result = count_total / (double) NUM_RAND * 4 / NUM_REPEAT;
+    pi_result = count_total /(double) NUM_RAND * 4 / NUM_REPEAT;
     printf("calculated PI: %lf\n", pi_result);
 
 return 0;

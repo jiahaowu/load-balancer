@@ -56,7 +56,6 @@ public class Launcher {
             main.clusterClient = new ClusterClient(main.serverAddr, main.port, main.performance);
             main.clusterClient.joinCluster();
             main.clusterClient.shutdown();
-
         }
     }
 }

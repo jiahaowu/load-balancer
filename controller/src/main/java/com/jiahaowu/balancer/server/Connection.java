@@ -1,9 +1,6 @@
 package com.jiahaowu.balancer.server;
 
-import com.jiahaowu.balancer.protocol.Cluster;
-import com.jiahaowu.balancer.protocol.ComputingNode;
-import com.jiahaowu.balancer.protocol.ConnectionServiceGrpc;
-import com.jiahaowu.balancer.protocol.JoinResponse;
+import com.jiahaowu.balancer.protocol.*;
 import io.grpc.stub.StreamObserver;
 
 /**
@@ -31,9 +28,8 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
             }
         }
 
-
         JoinResponse.Builder responseBuilder = JoinResponse.newBuilder();
-        if (clusterBuilder.getNodeListCount() == 0) {
+        if (clusterBuilder.getNodeListCount() == 1) {
             responseBuilder.setNodeCount(clusterBuilder.getNodeListCount()).setIsBackup(true);
         } else {
             responseBuilder.setNodeCount(clusterBuilder.getNodeListCount()).setIsBackup(false);
@@ -43,4 +39,14 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
         responseObserver.onCompleted();
     }
 
+    @Override
+    public void backupServer(BackupRequest request, StreamObserver<BackupResponse> responseObserver) {
+        BackupResponse.Builder backupBuilder = BackupResponse.newBuilder();
+        if (request.getClusterInfo()) {
+            backupBuilder.setClusterInfo(clusterBuilder.build());
+        }
+
+        responseObserver.onNext(backupBuilder.build());
+        responseObserver.onCompleted();
+    }
 }

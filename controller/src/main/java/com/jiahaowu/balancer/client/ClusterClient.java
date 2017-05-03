@@ -1,8 +1,6 @@
 package com.jiahaowu.balancer.client;
 
-import com.jiahaowu.balancer.protocol.ComputingNode;
-import com.jiahaowu.balancer.protocol.ConnectionServiceGrpc;
-import com.jiahaowu.balancer.protocol.JoinResponse;
+import com.jiahaowu.balancer.protocol.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -63,7 +61,11 @@ public class ClusterClient {
     }
 
     private void backupServer() {
+        BackupRequest request = BackupRequest.newBuilder()
+                .setClusterInfo(true).build();
 
+        System.out.println("Starting backup server request");
+        BackupResponse response = stub.backupServer(request);
     }
 
     public void shutdown() {

@@ -1,3 +1,5 @@
+./cleanme
+
 # Compile Java code
 javac JniSample.java
 
@@ -10,9 +12,7 @@ javac JniSample.java
 unamestr=`uname`
 
 if [[ "$unamestr" == 'Linux' ]]; then
-	
 	gcc -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/linux -I. -o ./libJniSample.so ./JniSample.c
-
 elif [[ "$unamestr" == 'Darwin' ]]; then
    gcc -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/darwin -I. -o ./libJniSample.dylib ./JniSample.c
 fi

@@ -1,14 +1,16 @@
 public class JniSample {
-
-    public native int sayHello();
-
+   
+   static {
+      System.loadLibrary("JniSample");
+   }
+	public native double sayHello(int a);
+    
     public static void main(String[] args) {
 
-        System.loadLibrary("JniSample");
         System.out.println("In java main");
-
-        JniSample s = new JniSample();
-        int a=s.sayHello();
+        
+        //int a=s.sayHello(7);
+        System.out.println(new JniSample().sayHello(3));
         
     }
 }

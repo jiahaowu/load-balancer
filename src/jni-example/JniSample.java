@@ -3,14 +3,14 @@ public class JniSample {
    static {
       System.loadLibrary("JniSample");
    }
-	public native int sayHello(int num_rand, int num_repeat);
+	public native int Monte(int num_rand, int num_repeat);
     
     public static void main(String[] args) {
 
         int num_rand = 10000;
         int num_repeat = 3;
 
-        int count_total = new JniSample().sayHello(num_rand,num_repeat);
+        int count_total = new JniSample().Monte(num_rand,num_repeat);
 
         double pi_result = count_total /(double) num_rand / num_repeat * 4 ;
 

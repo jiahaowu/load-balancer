@@ -2,7 +2,7 @@
 javac JniSample.java
 
 # Create the header file: it generate header file.
-javah JniSample
+#javah JniSample
 
 # Based on this generated header file, we can make JniSample.c
 # Then, make library using this.

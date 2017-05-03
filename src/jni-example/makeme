@@ -14,7 +14,9 @@ unamestr=`uname`
 if [[ "$unamestr" == 'Linux' ]]; then
 	gcc -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/linux -I. -o ./libJniSample.so ./JniSample.c
 elif [[ "$unamestr" == 'Darwin' ]]; then
-   gcc-6 -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib -fopenmp -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/darwin -I. -o ./libJniSample.dylib ./JniSample.c -lm -lcrypto -lssl
+   gcc-6 -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib \
+   -fopenmp -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/darwin \
+   -I. -o ./libJniSample.dylib ./JniSample.c -lm -lcrypto -lssl
 fi
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.

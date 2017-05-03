@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 
 public class ClientLauncher {
     private static final String HOST = "127.0.0.1";
-    private static final int PORT = 8080;
+    private static final int PORT = 8800;
 
     public static void main(String[] args) throws UnknownHostException {
         ClusterClient cc = new ClusterClient(HOST, PORT, 2.3);

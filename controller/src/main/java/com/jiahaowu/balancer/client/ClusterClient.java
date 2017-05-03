@@ -16,6 +16,7 @@ public class ClusterClient {
     private Integer serverPort;
     private String hostName;
     private Double performance;
+    private Cluster cluster;
 
     private ManagedChannel chan;
     private ConnectionServiceGrpc.ConnectionServiceBlockingStub stub;
@@ -66,6 +67,15 @@ public class ClusterClient {
 
         System.out.println("Starting backup server request");
         BackupResponse response = stub.backupServer(request);
+        cluster = response.getClusterInfo();
+    }
+
+    public boolean isBackupServer() {
+        return cluster != null;
+    }
+
+    public Cluster getCluster() {
+        return cluster;
     }
 
     public void shutdown() {

@@ -55,6 +55,9 @@ public class Launcher {
             // Launcher starts the clusterClient mode
             main.clusterClient = new ClusterClient(main.serverAddr, main.port, main.performance);
             main.clusterClient.joinCluster();
+            if(main.clusterClient.isBackupServer()) {
+
+            }
             main.clusterClient.shutdown();
         }
     }

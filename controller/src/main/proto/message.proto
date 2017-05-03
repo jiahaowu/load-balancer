@@ -10,8 +10,19 @@ service ConnectionService {
     rpc JoinCluster (ComputingNode) returns (JoinResponse) {
     }
 
+    rpc Alive (Ping) returns (Pong) {
+    }
+
     rpc BackupServer (BackupRequest) returns (BackupResponse) {
     }
+}
+
+message Ping {
+    bool flag = 1;
+}
+
+message Pong {
+    bool flag = 1;
 }
 
 message JoinResponse {
@@ -23,6 +34,7 @@ message ComputingNode {
     string hostname = 2;
     string ipAddr = 3;
     double performance = 4;
+    int32 timeout = 5;
 }
 
 message BackupRequest {
@@ -31,7 +43,7 @@ message BackupRequest {
 }
 
 message BackupResponse {
-     Cluster clusterInfo = 1;
+    Cluster clusterInfo = 1;
 }
 
 message Cluster {

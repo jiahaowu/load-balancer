@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 
 public class ServerLauncher {
-    private static final int SERVER_PORT = 8080;
+    private static final int SERVER_PORT = 8800;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         ClusterServer cserv = new ClusterServer(SERVER_PORT);

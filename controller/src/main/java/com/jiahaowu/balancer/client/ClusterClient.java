@@ -56,6 +56,14 @@ public class ClusterClient {
 
         System.out.println("Sending request to join cluster");
         JoinResponse response = stub.joinCluster(request);
+
+        if(response.getIsBackup()) {
+            backupServer();
+        }
+    }
+
+    private void backupServer() {
+
     }
 
     public void shutdown() {

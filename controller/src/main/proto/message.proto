@@ -9,16 +9,29 @@ service ConnectionService {
     // allow nodes join the cluster
     rpc JoinCluster (ComputingNode) returns (JoinResponse) {
     }
+
+    rpc BackupServer (BackupRequest) returns (BackupResponse) {
+    }
 }
 
 message JoinResponse {
     int32 nodeCount = 1;
+    bool isBackup = 2;
 }
 
 message ComputingNode {
     string hostname = 2;
     string ipAddr = 3;
     double performance = 4;
+}
+
+message BackupRequest {
+    bool clusterInfo = 1;
+    bool stateInfo = 2;
+}
+
+message BackupResponse {
+     Cluster clusterInfo = 1;
 }
 
 message Cluster {

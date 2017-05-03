@@ -18,7 +18,8 @@ service ConnectionService {
 }
 
 message Ping {
-    bool flag = 1;
+    string ip = 1;
+    bool flag = 2;
 }
 
 message Pong {

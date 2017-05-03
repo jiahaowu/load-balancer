@@ -49,4 +49,9 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
         responseObserver.onNext(backupBuilder.build());
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void alive(Ping request, StreamObserver<Pong> responseObserver) {
+
+    }
 }

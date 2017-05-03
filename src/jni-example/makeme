@@ -6,7 +6,14 @@ javac JniSample.java
 
 # Based on this generated header file, we can make JniSample.c
 # Then, make library using this.
-cc -v -c -fPIC -I$JAVA_HOME/include -I$JAVA_HOME/include/darwin JniSample.c -o libJniSample.o
+
+unamestr=`uname`
+
+if [[ "$unamestr" == 'Linux' ]]; then
+   gcc -v -c -fPIC -I$JAVA_HOME/include -I$JAVA_HOME/include/linux JniSample.c -o libJniSample.o
+elif [[ "$unamestr" == 'Darwin' ]]; then
+   gcc -v -c -fPIC -I$JAVA_HOME/include -I$JAVA_HOME/include/darwin JniSample.c -o libJniSample.o
+fi
 
 libtool -dynamic -lSystem libJniSample.o -o libJniSample.dylib
 

@@ -8,6 +8,7 @@ public class JniSample {
         System.out.println("In java main");
 
         JniSample s = new JniSample();
-        s.sayHello();
+        int a=s.sayHello();
+        
     }
 }

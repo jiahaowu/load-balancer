@@ -1,0 +1,4 @@
+rm -f JniSample.h
+rm -f JniSample.class
+rm -f libJniSample.dylib
+rm -f libJniSample.o

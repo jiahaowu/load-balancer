@@ -1,0 +1,4 @@
+pushd ./build/libs
+java -jar controller.jar -m SERVER -p 8000
+popd
+

@@ -1,0 +1,14 @@
+# Compile Java code
+javac JniSample.java
+
+# Create the header file: it generate header file.
+javah JniSample
+
+# Based on this generated header file, we can make JniSample.c
+# Then, make library using this.
+cc -v -c -fPIC -I$JAVA_HOME/include -I$JAVA_HOME/include/darwin JniSample.c -o libJniSample.o
+
+libtool -dynamic -lSystem libJniSample.o -o libJniSample.dylib
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
+

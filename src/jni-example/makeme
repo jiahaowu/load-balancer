@@ -12,7 +12,7 @@ unamestr=`uname`
 if [[ "$unamestr" == 'Linux' ]]; then
 	gcc -v -c -fPIC -I$JAVA_HOME/include -I$JAVA_HOME/include/linux JniSample.c -o libJniSample.o
 	
-	gcc -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/linux -I. -o ./libJniSample.dylib ./JniSample.c
+	gcc -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/linux -I. -o ./libJniSample.so ./JniSample.c
 
 elif [[ "$unamestr" == 'Darwin' ]]; then
    gcc -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/darwin -I. -o ./libJniSample.dylib ./JniSample.c

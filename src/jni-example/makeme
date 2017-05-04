@@ -8,9 +8,10 @@ javac JniSample.java
 # Then, make library using this.
 
 unamestr=`uname`
+# gcc -fopenmp -o monte-carlo.exe monte-carlo.c -lm -lcrypto -lssl
 
 if [[ "$unamestr" == 'Linux' ]]; then
-	gcc -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/linux -I. -o ./libJniSample.so ./JniSample.c
+	gcc -fopenmp -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/linux -I. -o ./libJniSample.so ./JniSample.c -lm -lcrypto -lssl
 elif [[ "$unamestr" == 'Darwin' ]]; then
    gcc-6 -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib \
    -fopenmp -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/darwin \

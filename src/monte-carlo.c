@@ -13,8 +13,8 @@
 #include <sys/time.h>
 #include <openssl/rand.h>
 
-#define NUM_RAND 10000000
-#define NUM_REPEAT 10
+#define NUM_RAND 1000000
+#define NUM_REPEAT 1
 
 int main(int argc, char **argv)
 {
@@ -58,11 +58,11 @@ int main(int argc, char **argv)
         for(i=1; i<NUM_RAND; i++) {
  
 		/* One way to get random integers -- full range */
-		if( !(RAND_pseudo_bytes((unsigned char *)randInts_A,sizeof(randInts_A)))) {
+		if( !(RAND_bytes((unsigned char *)randInts_A,sizeof(randInts_A)))) {
 		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
 		exit(1);
 		}
-		if( !(RAND_pseudo_bytes((unsigned char *)randInts_B, sizeof(randInts_B)))) {
+		if( !(RAND_bytes((unsigned char *)randInts_B, sizeof(randInts_B)))) {
 		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
 		exit(1);
 		}

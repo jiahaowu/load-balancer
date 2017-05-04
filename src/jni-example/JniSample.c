@@ -28,7 +28,7 @@ JNIEXPORT jint JNICALL Java_JniSample_Monte (JNIEnv *env, jobject obj, jint num_
         count[i] = 0;
     }
 
-	for (j=0; j<num_repeat; j++) {
+  for (j=0; j<num_repeat; j++) {
       #pragma omp parallel private(my_cpu_id)
       {
         #ifdef _OPENMP
@@ -40,15 +40,15 @@ JNIEXPORT jint JNICALL Java_JniSample_Monte (JNIEnv *env, jobject obj, jint num_
         #pragma omp for
         for(i=1; i<num_rand; i++) {
  
-		/* One way to get random integers -- full range */
-		if( !(RAND_pseudo_bytes((unsigned char *)randInts_A,sizeof(randInts_A)))) {
-		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
-		exit(1);
-		}
-		if( !(RAND_pseudo_bytes((unsigned char *)randInts_B, sizeof(randInts_B)))) {
-		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
-		exit(1);
-		}
+    /* One way to get random integers -- full range */
+    if( !(RAND_bytes((unsigned char *)randInts_A,sizeof(randInts_A)))) {
+    printf("ERROR: call to RAND_pseudo_bytes() failed\n");
+    exit(1);
+    }
+    if( !(RAND_bytes((unsigned char *)randInts_B, sizeof(randInts_B)))) {
+    printf("ERROR: call to RAND_pseudo_bytes() failed\n");
+    exit(1);
+    }
 
         rand_double_A = randInts_A[0] / (double)INT_MAX;
         rand_double_B = randInts_B[0] / (double)INT_MAX;
@@ -57,7 +57,7 @@ JNIEXPORT jint JNICALL Java_JniSample_Monte (JNIEnv *env, jobject obj, jint num_
         if (radius <= 1) count[my_cpu_id]++;
         //printf("Random Integer: %d, Random double: %lf\n", randInt, rand_double);
         }
-	  }
+    }
     }
     
     for (i=0;i<numthreads;i++) {      

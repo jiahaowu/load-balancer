@@ -18,4 +18,3 @@ elif [[ "$unamestr" == 'Darwin' ]]; then
 fi
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
-

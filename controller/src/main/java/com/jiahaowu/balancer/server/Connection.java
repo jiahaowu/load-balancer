@@ -3,15 +3,19 @@ package com.jiahaowu.balancer.server;
 import com.jiahaowu.balancer.protocol.*;
 import io.grpc.stub.StreamObserver;
 
+import java.util.Map;
+
 /**
  * Created by jiahao on 5/1/17.
  */
 
 public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase {
     private Cluster.Builder clusterBuilder;
+    private Map<String, Integer> clientTimeout;
 
-    public Connection(Cluster.Builder clusterBuilder) {
+    public Connection(Cluster.Builder clusterBuilder, Map<String, Integer> clientTimeout) {
         this.clusterBuilder = clusterBuilder;
+        this.clientTimeout = clientTimeout;
     }
 
     @Override
@@ -52,6 +56,13 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
 
     @Override
     public void alive(Ping request, StreamObserver<Pong> responseObserver) {
-
+        String ip = request.getIp();
+        synchronized (clientTimeout) {
+            clientTimeout.put(ip, 2000);
+        }
+        Pong.Builder response = Pong.newBuilder();
+        response.setFlag(true);
+        responseObserver.onNext(response.build());
+        responseObserver.onCompleted();
     }
 }

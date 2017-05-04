@@ -27,7 +27,7 @@ public class ClusterServer {
 
     public void start() throws IOException, InterruptedException {
         Server server = ServerBuilder.forPort(serverPort)
-                .addService(new Connection(clusterBuilder))
+                .addService(new Connection(clusterBuilder, clientTimeout))
                 .build();
 
         server.start();

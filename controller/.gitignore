@@ -2,6 +2,7 @@
 ### Gradle template
 /build/
 .idea
+.gradle/
 out
 
 # Ignore Gradle GUI config

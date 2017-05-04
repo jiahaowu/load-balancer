@@ -1,5 +1,3 @@
-./cleanme
-
 # Compile Java code
 javac JniSample.java
 

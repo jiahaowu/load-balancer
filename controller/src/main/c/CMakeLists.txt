@@ -12,6 +12,7 @@ if (OPENMP_FOUND)
 endif()
 
 include_directories(${JNI_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR})
-add_library(jnipi SHARED JniPi.c)
-
+add_library(jnipi SHARED com_jiahaowu_balancer_task_TaskPi.c)
+add_library(jnibench SHARED com_jiahaowu_balancer_task_TaskBench.c)
 target_link_libraries(jnipi m ${OPENSSL_LIBRARIES})
+target_link_libraries(jnibench m)

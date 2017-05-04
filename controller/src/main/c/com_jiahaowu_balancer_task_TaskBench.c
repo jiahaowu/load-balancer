@@ -1,77 +1,10 @@
-#include "JniPi.h"
-
-JNIEXPORT jint JNICALL Java_Jni_Monte (JNIEnv *env, jobject obj, jint num_rand, jint num_repeat) {
-
-    int my_cpu_id,numthreads;
-    
-    #ifdef _OPENMP
-    numthreads=omp_get_max_threads();
-    #else
-    numthreads=1;
-    #endif
-    
-    int i,j;
-    int randInts_A[1], randInts_B[1];
-    int count[numthreads];
-    int count_total = 0;
-    double radius;
-    double rand_double_A, rand_double_B;
-    double pi_result;
-
-    /* Measure runtime */
-    double totaltime = 0;
-    struct timeval  tv1, tv2;
-    gettimeofday(&tv1, NULL);
-
-    // printf("numthreads: %d\n",numthreads);
-    for (i=0; i<numthreads; i++) {
-        count[i] = 0;
-    }
-
-	for (j=0; j<num_repeat; j++) {
-      #pragma omp parallel private(my_cpu_id)
-      {
-        #ifdef _OPENMP
-        my_cpu_id=omp_get_thread_num();
-        #else
-        my_cpu_id=0;
-        #endif
-        
-        #pragma omp for
-        for(i=1; i<num_rand; i++) {
- 
-		/* One way to get random integers -- full range */
-		if( !(RAND_pseudo_bytes((unsigned char *)randInts_A,sizeof(randInts_A)))) {
-		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
-		exit(1);
-		}
-		if( !(RAND_pseudo_bytes((unsigned char *)randInts_B, sizeof(randInts_B)))) {
-		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
-		exit(1);
-		}
-
-        rand_double_A = randInts_A[0] / (double)INT_MAX;
-        rand_double_B = randInts_B[0] / (double)INT_MAX;
-
-        radius = rand_double_A * rand_double_A + rand_double_B *rand_double_B;
-        if (radius <= 1) count[my_cpu_id]++;
-        //printf("Random Integer: %d, Random double: %lf\n", randInt, rand_double);
-        }
-	  }
-    }
-    
-    for (i=0;i<numthreads;i++) {      
-        count_total += count[i];
-    }
-
-  return count_total;
-}
+#include "com_jiahaowu_balancer_task_TaskBench.h"
 
 // Benchmark Prgoram
 // Reference: Reference:
 // https://people.sc.fsu.edu/~jburkardt/c_src/sgefa_openmp/sgefa_openmp.html
 
-JNIEXPORT jdouble JNICALL Java_JniSample_Bench (JNIEnv *env, jobject obj, jint n) {
+JNIEXPORT jdouble JNICALL Java_com_jiahaowu_balancer_task_TaskBench_Bench (JNIEnv *env, jobject obj, jint n) {
 
   //timestamp ( );
   double bench_result = test02(n);
@@ -335,7 +268,7 @@ int isamax ( int n, float x[], int incx )
     LC: QA214.L56.
 
     Charles Lawson, Richard Hanson, David Kincaid, Fred Krogh,
-    Algorithm 539: 
+    Algorithm 539:
     Basic Linear Algebra Subprograms for Fortran Usage,
     ACM Transactions on Mathematical Software,
     Volume 5, Number 3, September 1979, pages 308-323.
@@ -408,7 +341,7 @@ int isamax ( int n, float x[], int incx )
 void matgen ( int lda, int n, float a[], float x[], float b[] )
 
 /*******************************************************************************/
-/* 
+/*
   Purpose:
 
     MATGEN generates a "random" matrix for testing.
@@ -462,7 +395,7 @@ void matgen ( int lda, int n, float a[], float x[], float b[] )
 /*
   Set b = A * x.
 */
-  for ( i = 0; i < n; i++ ) 
+  for ( i = 0; i < n; i++ )
   {
     b[i] = 0.0;
     for ( j = 0; j < n; j++ )
@@ -580,7 +513,7 @@ void msaxpy2 ( int nr, int nc, float a[], int n, float x[], float y[] )
 int msgefa ( float a[], int lda, int n, int ipvt[] )
 
 /******************************************************************************/
-/* 
+/*
   Purpose:
 
     MSGEFA factors a matrix by gaussian elimination.
@@ -617,7 +550,7 @@ int msgefa ( float a[], int lda, int n, int ipvt[] )
   Parameters:
 
     Input/output, float A[LDA*N].  On input, the matrix to be factored.
-    On output, an upper triangular matrix and the multipliers which were 
+    On output, an upper triangular matrix and the multipliers which were
     used to obtain it.  The factorization can be written A = L * U where
     L is a product of permutation and unit lower triangular matrices and
     U is upper triangular.
@@ -658,7 +591,7 @@ int msgefa ( float a[], int lda, int n, int ipvt[] )
       a[l+k*lda] = a[k+k*lda];
       a[k+k*lda] = t;
     }
-    t = -1.0 / a[k+k*lda]; 
+    t = -1.0 / a[k+k*lda];
     sscal ( n-k-1, t, a+kp1+k*lda, 1 );
 /*
   Interchange the pivot row and the K-th row.
@@ -687,7 +620,7 @@ int msgefa ( float a[], int lda, int n, int ipvt[] )
 int msgefa2 ( float a[], int lda, int n, int ipvt[] )
 
 /******************************************************************************/
-/* 
+/*
   Purpose:
 
     MSGEFA2 factors a matrix by gaussian elimination.
@@ -724,7 +657,7 @@ int msgefa2 ( float a[], int lda, int n, int ipvt[] )
   Parameters:
 
     Input/output, float A[LDA*N].  On input, the matrix to be factored.
-    On output, an upper triangular matrix and the multipliers which were 
+    On output, an upper triangular matrix and the multipliers which were
     used to obtain it.  The factorization can be written A = L * U where
     L is a product of permutation and unit lower triangular matrices and
     U is upper triangular.
@@ -765,7 +698,7 @@ int msgefa2 ( float a[], int lda, int n, int ipvt[] )
       a[l+k*lda] = a[k+k*lda];
       a[k+k*lda] = t;
     }
-    t = -1.0 / a[k+k*lda]; 
+    t = -1.0 / a[k+k*lda];
     sscal ( n-k-1, t, a+kp1+k*lda, 1 );
 /*
   Interchange the pivot row and the K-th row.
@@ -822,8 +755,8 @@ void saxpy ( int n, float a, float x[], int incx, float y[], int incy )
 
     Charles Lawson, Richard Hanson, David Kincaid, Fred Krogh,
     Basic Linear Algebra Subprograms for Fortran Usage,
-    Algorithm 539, 
-    ACM Transactions on Mathematical Software, 
+    Algorithm 539,
+    ACM Transactions on Mathematical Software,
     Volume 5, Number 3, September 1979, pages 308-323.
 
   Parameters:
@@ -941,8 +874,8 @@ float sdot ( int n, float x[], int incx, float y[], int incy )
 
     Charles Lawson, Richard Hanson, David Kincaid, Fred Krogh,
     Basic Linear Algebra Subprograms for Fortran Usage,
-    Algorithm 539, 
-    ACM Transactions on Mathematical Software, 
+    Algorithm 539,
+    ACM Transactions on Mathematical Software,
     Volume 5, Number 3, September 1979, pages 308-323.
 
   Parameters:
@@ -1018,10 +951,10 @@ float sdot ( int n, float x[], int incx, float y[], int incy )
 
     for ( i = m; i < n; i = i + 5 )
     {
-      temp = temp + x[i  ] * y[i  ] 
-                  + x[i+1] * y[i+1] 
-                  + x[i+2] * y[i+2] 
-                  + x[i+3] * y[i+3] 
+      temp = temp + x[i  ] * y[i  ]
+                  + x[i+1] * y[i+1]
+                  + x[i+2] * y[i+2]
+                  + x[i+3] * y[i+3]
                   + x[i+4] * y[i+4];
     }
   }
@@ -1065,7 +998,7 @@ int sgefa ( float a[], int lda, int n, int ipvt[] )
   Parameters:
 
     Input/output, float A[LDA*N].  On input, the matrix to be factored.
-    On output, an upper triangular matrix and the multipliers which were 
+    On output, an upper triangular matrix and the multipliers which were
     used to obtain it.  The factorization can be written A = L * U where
     L is a product of permutation and unit lower triangular matrices and
     U is upper triangular.
@@ -1092,54 +1025,54 @@ int sgefa ( float a[], int lda, int n, int ipvt[] )
 
   info = 0;
 
-  for ( k = 1; k <= n - 1; k++ ) 
+  for ( k = 1; k <= n - 1; k++ )
   {
-/* 
+/*
   Find l = pivot index.
 */
     l = isamax ( n-k+1, &a[k-1+(k-1)*lda], 1 ) + k - 1;
     ipvt[k-1] = l;
-/* 
+/*
   Zero pivot implies this column already triangularized.
 */
-    if ( a[l-1+(k-1)*lda] != 0.0 ) 
+    if ( a[l-1+(k-1)*lda] != 0.0 )
     {
-/* 
+/*
   Interchange if necessary.
 */
-      if ( l != k ) 
+      if ( l != k )
       {
         t                = a[l-1+(k-1)*lda];
         a[l-1+(k-1)*lda] = a[k-1+(k-1)*lda];
-        a[k-1+(k-1)*lda] = t; 
+        a[k-1+(k-1)*lda] = t;
       }
-/* 
+/*
   Compute multipliers.
 */
       t = - 1.0 / a[k-1+(k-1)*lda];
       sscal ( n-k, t, &a[k+(k-1)*lda], 1 );
-/* 
+/*
   Row elimination with column indexing.
 */
-      for ( j = k + 1; j <= n; j++ ) 
+      for ( j = k + 1; j <= n; j++ )
       {
         t = a[l-1+(j-1)*lda];
-        if (l != k) 
+        if (l != k)
         {
           a[l-1+(j-1)*lda] = a[k-1+(j-1)*lda];
           a[k-1+(j-1)*lda] = t;
         }
         saxpy ( n-k, t, &a[k+(k-1)*lda], 1, &a[k+(j-1)*lda], 1 );
-      } 
+      }
     }
     else
-    { 
+    {
       info = k;
     }
-  } 
+  }
   ipvt[n-1] = n;
 
-  if (a[n-1+(n-1)*lda] == 0.0 ) 
+  if (a[n-1+(n-1)*lda] == 0.0 )
   {
     info = n - 1;
   }
@@ -1377,8 +1310,8 @@ void sswap ( int n, float x[], int incx, float y[], int incy )
 
     Charles Lawson, Richard Hanson, David Kincaid, Fred Krogh,
     Basic Linear Algebra Subprograms for Fortran Usage,
-    Algorithm 539, 
-    ACM Transactions on Mathematical Software, 
+    Algorithm 539,
+    ACM Transactions on Mathematical Software,
     Volume 5, Number 3, September 1979, pages 308-323.
 
   Parameters:

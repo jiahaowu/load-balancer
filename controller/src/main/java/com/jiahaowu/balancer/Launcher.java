@@ -27,6 +27,9 @@ public class Launcher {
     @Parameter(names = {"-p", "--port"}, description = "Port number the clusterServer listens on")
     private Integer port = 8800;
 
+    @Parameter(names = {"-n", "--num"}, description = "Number of Simulations")
+    private Integer simulationNum = 100000;
+
     private ClusterClient clusterClient;
     private ClusterServer clusterServer;
 
@@ -42,6 +45,8 @@ public class Launcher {
         if (main.state.equals(STATS[0])) {
             // Launcher starts the clusterServer mode
             main.clusterServer = new ClusterServer(main.port);
+            main.clusterServer.setSimulationNumber(main.simulationNum);
+
             try {
                 main.clusterServer.start();
             } catch (IOException | InterruptedException e) {
@@ -52,7 +57,7 @@ public class Launcher {
             // Launcher starts the clusterClient mode
             main.clusterClient = new ClusterClient(main.serverAddr, main.port);
             main.clusterClient.joinCluster();
-            if(main.clusterClient.isBackupServer()) {
+            if (main.clusterClient.isBackupServer()) {
 
             }
             main.clusterClient.shutdown();

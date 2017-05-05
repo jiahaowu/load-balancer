@@ -20,6 +20,12 @@ public class ClusterServer {
     private static Double computingPower;
     private static Map<String, Integer> clientTimeout;
 
+    public void setSimulationNumber(Integer simulationNumber) {
+        ClusterServer.simulationNumber = simulationNumber;
+    }
+
+    private static Integer simulationNumber;
+
     public static void setClusterBuilder(Cluster.Builder clusterBuilder) {
         ClusterServer.clusterBuilder = clusterBuilder;
     }

@@ -15,6 +15,28 @@ service ConnectionService {
 
     rpc BackupServer (BackupRequest) returns (BackupResponse) {
     }
+
+    rpc RequestTask (TaskRequest) returns (TaskResponse) {
+    }
+
+    rpc CommitTask (CommitRequest) returns (CommitResponse) {
+    }
+}
+
+message TaskRequest {
+
+}
+
+message TaskResponse{
+
+}
+
+message CommitRequest {
+
+}
+
+message CommitResponse {
+
 }
 
 message Ping {

@@ -11,11 +11,11 @@ unamestr=`uname`
 # gcc -fopenmp -o monte-carlo.exe monte-carlo.c -lm -lcrypto -lssl
 
 if [[ "$unamestr" == 'Linux' ]]; then
-	gcc -fopenmp -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/linux -I. -o ./libJniSample.so ./JniSample.c -lm -lcrypto -lssl
+	gcc -fopenmp -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/linux -I. -o ./libJniSample.so ./JniSample.c -lm
 elif [[ "$unamestr" == 'Darwin' ]]; then
    gcc-6 -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib \
    -fopenmp -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/darwin \
-   -I. -o ./libJniSample.dylib ./JniSample.c -lm -lcrypto -lssl
+   -I. -o ./libJniSample.dylib ./JniSample.c -lm
 fi
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.

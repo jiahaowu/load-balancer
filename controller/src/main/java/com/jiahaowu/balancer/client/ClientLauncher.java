@@ -14,7 +14,8 @@ public class ClientLauncher {
 
     public static void main(String[] args) throws UnknownHostException {
         ClusterClient cc = new ClusterClient(HOST, PORT);
-        cc.joinCluster();
+
+        cc.start();
         cc.shutdown();
     }
 }

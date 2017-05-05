@@ -14,8 +14,8 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
 
     @Override
     public void joinCluster(ComputingNode request, StreamObserver<JoinResponse> responseObserver) {
-        System.out.println("Join request received from " + request.getHostname());
-        System.out.println(request);
+//        System.out.println("Join request received from " + request.getHostname());
+//        System.out.println(request);
 
         ClusterServer.setComputingPower(ClusterServer.getComputingPower() + request.getPerformance());
         ClusterServer.getClientTimeout().put(request.getIpAddr(), 2100);
@@ -64,11 +64,32 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
 
     @Override
     public void requestTask(TaskRequest request, StreamObserver<TaskResponse> responseObserver) {
-
+        int assignNumber = 0;
+        int pending = ClusterServer.getPendingNumber();
+        double ratio = request.getPower() / ClusterServer.getComputingPower();
+        int batch = (int) ratio * ClusterServer.getBatchSize();
+        TaskResponse.Builder taskBuilder = TaskResponse.newBuilder();
+        if (pending > 0) {
+            assignNumber = Math.min(pending, batch);
+            ClusterServer.setPendingNumber(pending - assignNumber);
+            taskBuilder.setDone(false);
+            taskBuilder.setPause(false);
+            taskBuilder.setNumRand(assignNumber).setNumRepeat(1);
+        } else {
+            taskBuilder.setDone(true);
+        }
+        responseObserver.onNext(taskBuilder.build());
+        responseObserver.onCompleted();
     }
 
     @Override
     public void commitTask(CommitRequest request, StreamObserver<CommitResponse> responseObserver) {
+        int validCount = request.getCount();
+        int total = request.getTotal();
+        ClusterServer.setValidCount(ClusterServer.getValidCount() + validCount);
+        ClusterServer.setProcessedTotal(ClusterServer.getProcessedTotal() + total);
+        responseObserver.onNext(CommitResponse.newBuilder().setFlag(true).build());
+        responseObserver.onCompleted();
     }
 
 }

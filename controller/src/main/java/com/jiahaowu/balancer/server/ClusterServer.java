@@ -17,6 +17,8 @@ import java.util.Map;
 public class ClusterServer {
     private Integer serverPort;
     private static Cluster.Builder clusterBuilder;
+    private static Double computingPower;
+    private static Map<String, Integer> clientTimeout;
 
     public static void setClusterBuilder(Cluster.Builder clusterBuilder) {
         ClusterServer.clusterBuilder = clusterBuilder;
@@ -30,8 +32,6 @@ public class ClusterServer {
         ClusterServer.computingPower = computingPower;
     }
 
-    private static Map<String, Integer> clientTimeout;
-
     public static Cluster.Builder getClusterBuilder() {
         return clusterBuilder;
     }
@@ -44,7 +44,6 @@ public class ClusterServer {
         return computingPower;
     }
 
-    private static Double computingPower;
 
     public ClusterServer(Integer port) {
         serverPort = port;
@@ -73,8 +72,24 @@ public class ClusterServer {
                 Thread.currentThread().interrupt();
                 break;
             }
+            for (String ip : clientTimeout.keySet()) {
+                clientTimeout.put(ip, clientTimeout.get(ip) - 1000);
+                if (clientTimeout.get(ip) < 0) {
+                    removeClient(ip);
+                }
+            }
         }
         server.awaitTermination();
+    }
+
+    private void removeClient(String ip) {
+        for (int i = 0; i < clusterBuilder.getNodeListCount(); ++i) {
+            if (clusterBuilder.getNodeList(i).getIpAddr().equals(ip)) {
+                computingPower -= clusterBuilder.getNodeList(i).getPerformance();
+                clusterBuilder.removeNodeList(i);
+                break;
+            }
+        }
     }
 
     private List<String> getClientList() {

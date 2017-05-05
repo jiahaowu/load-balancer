@@ -18,7 +18,7 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
         System.out.println(request);
 
         ClusterServer.setComputingPower(ClusterServer.getComputingPower() + request.getPerformance());
-
+        ClusterServer.getClientTimeout().put(request.getIpAddr(), 2100);
         boolean isBackup = false;
 
         synchronized (ClusterServer.getClusterBuilder()) {
@@ -54,7 +54,7 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
     public void alive(Ping request, StreamObserver<Pong> responseObserver) {
         String ip = request.getIp();
         synchronized (ClusterServer.getClientTimeout()) {
-            ClusterServer.getClientTimeout().put(ip, 2000);
+            ClusterServer.getClientTimeout().put(ip, 2100);
         }
         Pong.Builder response = Pong.newBuilder();
         response.setFlag(true);

@@ -61,4 +61,14 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
         responseObserver.onNext(response.build());
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void requestTask(TaskRequest request, StreamObserver<TaskResponse> responseObserver) {
+
+    }
+
+    @Override
+    public void commitTask(CommitRequest request, StreamObserver<CommitResponse> responseObserver) {
+    }
+
 }

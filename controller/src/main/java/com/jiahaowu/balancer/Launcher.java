@@ -60,6 +60,11 @@ public class Launcher {
             if (main.clusterClient.isBackupServer()) {
 
             }
+
+            while (!main.clusterClient.isTerminated()) {
+                main.clusterClient.processBlock();
+            }
+
             main.clusterClient.shutdown();
         }
     }

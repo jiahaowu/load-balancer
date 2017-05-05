@@ -24,19 +24,22 @@ service ConnectionService {
 }
 
 message TaskRequest {
-
+    double power = 1;
 }
 
 message TaskResponse{
-
+    bool pause = 1;
+    bool done = 2;
+    int32 numRand = 3;
+    int32 numRepeat = 4;
 }
 
 message CommitRequest {
-
+    int32 count = 1;
 }
 
 message CommitResponse {
-
+    bool flag = 1;
 }
 
 message Ping {

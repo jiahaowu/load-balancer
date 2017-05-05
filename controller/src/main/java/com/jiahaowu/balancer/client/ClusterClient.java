@@ -2,6 +2,7 @@ package com.jiahaowu.balancer.client;
 
 import com.jiahaowu.balancer.protocol.*;
 import com.jiahaowu.balancer.task.TaskBench;
+import com.jiahaowu.balancer.task.TaskPi;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -18,6 +19,13 @@ public class ClusterClient {
     private String hostName;
     private Double performance;
     private Cluster cluster;
+    private TaskPi taskPi;
+
+    public boolean isTerminated() {
+        return isTerminated;
+    }
+
+    private boolean isTerminated = false;
 
     private ManagedChannel chan;
     private ConnectionServiceGrpc.ConnectionServiceBlockingStub stub;
@@ -46,6 +54,7 @@ public class ClusterClient {
                 .usePlaintext(true)
                 .build();
         stub = ConnectionServiceGrpc.newBlockingStub(chan);
+        taskPi = new TaskPi();
     }
 
     public void joinCluster() {
@@ -58,7 +67,7 @@ public class ClusterClient {
         System.out.println("Sending request to join cluster");
         JoinResponse response = stub.joinCluster(request);
 
-        if(response.getIsBackup()) {
+        if (response.getIsBackup()) {
             backupServer();
         }
     }
@@ -82,5 +91,20 @@ public class ClusterClient {
 
     public void shutdown() {
         chan.shutdown();
+    }
+
+    public void processBlock() {
+        TaskRequest request = TaskRequest.newBuilder().setPower(performance).build();
+        TaskResponse response = stub.requestTask(request);
+        if(response.getDone()) {
+            isTerminated = true;
+            return;
+        }
+        if(response.getPause()) {
+            return;
+        }
+        int result = taskPi.simulation(response.getNumRand(), response.getNumRepeat());
+        CommitRequest commit = CommitRequest.newBuilder().setCount(result).build();
+        CommitResponse commitResponse = stub.commitTask(commit);
     }
 }

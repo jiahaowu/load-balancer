@@ -53,9 +53,9 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
     @Override
     public void alive(Ping request, StreamObserver<Pong> responseObserver) {
         String ip = request.getIp();
-        synchronized (ClusterServer.getClientTimeout()) {
-            ClusterServer.getClientTimeout().put(ip, 2100);
-        }
+
+        ClusterServer.getClientTimeout().put(ip, 2100);
+
         Pong.Builder response = Pong.newBuilder();
         response.setFlag(true);
         responseObserver.onNext(response.build());
@@ -67,7 +67,9 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
         int assignNumber = 0;
         int pending = ClusterServer.getPendingNumber();
         double ratio = request.getPower() / ClusterServer.getComputingPower();
-        int batch = (int) ratio * ClusterServer.getBatchSize();
+        int batch = (int) (ratio * ClusterServer.getBatchSize());
+        //System.out.println("Batch = " + batch);
+
         TaskResponse.Builder taskBuilder = TaskResponse.newBuilder();
         if (pending > 0) {
             assignNumber = Math.min(pending, batch);

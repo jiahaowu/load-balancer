@@ -35,11 +35,15 @@ public class ClusterServer {
     }
 
     public static Integer getProcessedTotal() {
-        return processedTotal;
+        synchronized (processedTotal) {
+            return processedTotal;
+        }
     }
 
     public static void setProcessedTotal(Integer processedTotal) {
-        ClusterServer.processedTotal = processedTotal;
+        synchronized (processedTotal) {
+            ClusterServer.processedTotal = processedTotal;
+        }
     }
 
     public static Integer getBatchSize() {
@@ -51,19 +55,27 @@ public class ClusterServer {
     }
 
     public static Integer getPendingNumber() {
-        return pendingNumber;
+        synchronized (pendingNumber) {
+            return pendingNumber;
+        }
     }
 
     public static void setPendingNumber(Integer pendingNumber) {
-        ClusterServer.pendingNumber = pendingNumber;
+        synchronized (pendingNumber) {
+            ClusterServer.pendingNumber = pendingNumber;
+        }
     }
 
     public static Integer getValidCount() {
-        return validCount;
+        synchronized (validCount) {
+            return validCount;
+        }
     }
 
     public static void setValidCount(Integer validCount) {
-        ClusterServer.validCount = validCount;
+        synchronized (validCount) {
+            ClusterServer.validCount = validCount;
+        }
     }
 
     public static Integer getSimulationNumber() {
@@ -83,19 +95,27 @@ public class ClusterServer {
     }
 
     public static Map<String, Integer> getClientTimeout() {
-        return clientTimeout;
+        synchronized (clientTimeout) {
+            return clientTimeout;
+        }
     }
 
     public static void setClientTimeout(Map<String, Integer> clientTimeout) {
-        ClusterServer.clientTimeout = clientTimeout;
+        synchronized (clientTimeout) {
+            ClusterServer.clientTimeout = clientTimeout;
+        }
     }
 
     public static Double getComputingPower() {
-        return computingPower;
+        synchronized (computingPower) {
+            return computingPower;
+        }
     }
 
     public static void setComputingPower(Double computingPower) {
-        ClusterServer.computingPower = computingPower;
+        synchronized (computingPower) {
+            ClusterServer.computingPower = computingPower;
+        }
     }
 
     public void start() throws IOException, InterruptedException {

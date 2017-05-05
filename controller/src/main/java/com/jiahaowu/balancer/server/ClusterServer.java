@@ -16,18 +16,46 @@ import java.util.Map;
  */
 public class ClusterServer {
     private Integer serverPort;
-    private Cluster.Builder clusterBuilder;
-    private Map<String, Integer> clientTimeout;
+    private static Cluster.Builder clusterBuilder;
+
+    public static void setClusterBuilder(Cluster.Builder clusterBuilder) {
+        ClusterServer.clusterBuilder = clusterBuilder;
+    }
+
+    public static void setClientTimeout(Map<String, Integer> clientTimeout) {
+        ClusterServer.clientTimeout = clientTimeout;
+    }
+
+    public static void setComputingPower(Double computingPower) {
+        ClusterServer.computingPower = computingPower;
+    }
+
+    private static Map<String, Integer> clientTimeout;
+
+    public static Cluster.Builder getClusterBuilder() {
+        return clusterBuilder;
+    }
+
+    public static Map<String, Integer> getClientTimeout() {
+        return clientTimeout;
+    }
+
+    public static Double getComputingPower() {
+        return computingPower;
+    }
+
+    private static Double computingPower;
 
     public ClusterServer(Integer port) {
         serverPort = port;
         clusterBuilder = Cluster.newBuilder();
         clientTimeout = new HashMap<>();
+        computingPower = 0.0;
     }
 
     public void start() throws IOException, InterruptedException {
         Server server = ServerBuilder.forPort(serverPort)
-                .addService(new Connection(clusterBuilder, clientTimeout))
+                .addService(new Connection())
                 .build();
 
         server.start();
@@ -37,6 +65,7 @@ public class ClusterServer {
             long end = System.currentTimeMillis();
             System.out.println("Started " + ((end - start) / 1000) + " seconds");
             System.out.println(getClientList());
+            System.out.println("Computing Power: " + computingPower);
 
             try {
                 Thread.sleep(1000);                 //1000 milliseconds is one second.

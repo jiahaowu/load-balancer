@@ -3,19 +3,13 @@ package com.jiahaowu.balancer.server;
 import com.jiahaowu.balancer.protocol.*;
 import io.grpc.stub.StreamObserver;
 
-import java.util.Map;
-
 /**
  * Created by jiahao on 5/1/17.
  */
 
 public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase {
-    private Cluster.Builder clusterBuilder;
-    private Map<String, Integer> clientTimeout;
 
-    public Connection(Cluster.Builder clusterBuilder, Map<String, Integer> clientTimeout) {
-        this.clusterBuilder = clusterBuilder;
-        this.clientTimeout = clientTimeout;
+    public Connection() {
     }
 
     @Override
@@ -23,20 +17,22 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
         System.out.println("Join request received from " + request.getHostname());
         System.out.println(request);
 
+        ClusterServer.setComputingPower(ClusterServer.getComputingPower() + request.getPerformance());
+
         boolean isBackup = false;
 
-        synchronized (clusterBuilder) {
-            clusterBuilder.addNodeList(request);
-            if (clusterBuilder.getNodeListCount() == 0) {
+        synchronized (ClusterServer.getClusterBuilder()) {
+            ClusterServer.getClusterBuilder().addNodeList(request);
+            if (ClusterServer.getClusterBuilder().getNodeListCount() == 0) {
                 isBackup = true;
             }
         }
 
         JoinResponse.Builder responseBuilder = JoinResponse.newBuilder();
-        if (clusterBuilder.getNodeListCount() == 1) {
-            responseBuilder.setNodeCount(clusterBuilder.getNodeListCount()).setIsBackup(true);
+        if (ClusterServer.getClusterBuilder().getNodeListCount() == 1) {
+            responseBuilder.setNodeCount(ClusterServer.getClusterBuilder().getNodeListCount()).setIsBackup(true);
         } else {
-            responseBuilder.setNodeCount(clusterBuilder.getNodeListCount()).setIsBackup(false);
+            responseBuilder.setNodeCount(ClusterServer.getClusterBuilder().getNodeListCount()).setIsBackup(false);
         }
 
         responseObserver.onNext(responseBuilder.build());
@@ -47,7 +43,7 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
     public void backupServer(BackupRequest request, StreamObserver<BackupResponse> responseObserver) {
         BackupResponse.Builder backupBuilder = BackupResponse.newBuilder();
         if (request.getClusterInfo()) {
-            backupBuilder.setClusterInfo(clusterBuilder.build());
+            backupBuilder.setClusterInfo(ClusterServer.getClusterBuilder().build());
         }
 
         responseObserver.onNext(backupBuilder.build());
@@ -57,8 +53,8 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
     @Override
     public void alive(Ping request, StreamObserver<Pong> responseObserver) {
         String ip = request.getIp();
-        synchronized (clientTimeout) {
-            clientTimeout.put(ip, 2000);
+        synchronized (ClusterServer.getClientTimeout()) {
+            ClusterServer.getClientTimeout().put(ip, 2000);
         }
         Pong.Builder response = Pong.newBuilder();
         response.setFlag(true);

@@ -7,5 +7,9 @@ public class TaskPi {
     static {
         System.loadLibrary("jnipi");
     }
-    public native int Monte(int num_rand, int num_repeat);
+    private native int Monte(int num_rand, int num_repeat);
+
+    public int simulation(int numRand, int numRepeat) {
+        return Monte(numRand, numRepeat);
+    }
 }

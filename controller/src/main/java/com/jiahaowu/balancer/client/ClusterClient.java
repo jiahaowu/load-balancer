@@ -1,6 +1,7 @@
 package com.jiahaowu.balancer.client;
 
 import com.jiahaowu.balancer.protocol.*;
+import com.jiahaowu.balancer.task.TaskBench;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -21,10 +22,11 @@ public class ClusterClient {
     private ManagedChannel chan;
     private ConnectionServiceGrpc.ConnectionServiceBlockingStub stub;
 
-    public ClusterClient(String serverAddr, Integer port, Double performance) {
+    public ClusterClient(String serverAddr, Integer port) {
         this.serverAddr = serverAddr;
         this.serverPort = port;
-        this.performance = performance;
+        TaskBench bench = new TaskBench();
+        this.performance = bench.benchmark();
         InetAddress IP;
         try {
             IP = InetAddress.getLocalHost();

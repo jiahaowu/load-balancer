@@ -1,7 +1,5 @@
 package com.jiahaowu.balancer.task;
 
-import java.io.File;
-
 /**
  * Created by jiahao on 5/4/17.
  */
@@ -11,11 +9,10 @@ public class TaskBench {
     static {
         System.loadLibrary("jnibench");
     }
-    public native double Bench(int n);
 
-    public static void main(String[] args) {
-        double bench_result = new TaskBench().Bench(2000);
-        System.out.println("Bench_result: "+bench_result);
+    private native double Bench(int n);
+
+    public double benchmark() {
+        return Bench(1500);
     }
-
 }

@@ -13,7 +13,7 @@ public class ClientLauncher {
     private static final int PORT = 8800;
 
     public static void main(String[] args) throws UnknownHostException {
-        ClusterClient cc = new ClusterClient(HOST, PORT, 2.3);
+        ClusterClient cc = new ClusterClient(HOST, PORT);
         cc.joinCluster();
         cc.shutdown();
     }

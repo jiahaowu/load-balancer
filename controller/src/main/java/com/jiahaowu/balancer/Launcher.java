@@ -27,9 +27,6 @@ public class Launcher {
     @Parameter(names = {"-p", "--port"}, description = "Port number the clusterServer listens on")
     private Integer port = 8800;
 
-    @Parameter(names = {"-e", "--performance"}, description = "Performance parameter for the node")
-    private Double performance = 1.0;
-
     private ClusterClient clusterClient;
     private ClusterServer clusterServer;
 
@@ -53,7 +50,7 @@ public class Launcher {
 
         } else if (main.state.equals(STATS[1])) {
             // Launcher starts the clusterClient mode
-            main.clusterClient = new ClusterClient(main.serverAddr, main.port, main.performance);
+            main.clusterClient = new ClusterClient(main.serverAddr, main.port);
             main.clusterClient.joinCluster();
             if(main.clusterClient.isBackupServer()) {
 

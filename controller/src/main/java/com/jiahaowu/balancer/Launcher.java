@@ -28,7 +28,7 @@ public class Launcher {
     private Integer port = 8800;
 
     @Parameter(names = {"-n", "--num"}, description = "Number of Simulations")
-    private Integer simulationNum = 100000;
+    private Integer simulationNum = 1000000;
 
     private ClusterClient clusterClient;
     private ClusterServer clusterServer;
@@ -56,15 +56,8 @@ public class Launcher {
         } else if (main.state.equals(STATS[1])) {
             // Launcher starts the clusterClient mode
             main.clusterClient = new ClusterClient(main.serverAddr, main.port);
-            main.clusterClient.joinCluster();
-            if (main.clusterClient.isBackupServer()) {
 
-            }
-
-            while (!main.clusterClient.isTerminated()) {
-                main.clusterClient.processBlock();
-            }
-
+            main.clusterClient.start();
             main.clusterClient.shutdown();
         }
     }

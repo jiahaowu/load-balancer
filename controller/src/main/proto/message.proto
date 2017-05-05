@@ -36,6 +36,7 @@ message TaskResponse{
 
 message CommitRequest {
     int32 count = 1;
+    int32 total = 2;
 }
 
 message CommitResponse {

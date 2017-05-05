@@ -13,8 +13,8 @@
 #include <openssl/rand.h>
 /* Header for class JniSample */
 
-#ifndef _Included_JniSample
-#define _Included_JniSample
+#ifndef _Included_JniGo
+#define _Included_JniGo
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -23,8 +23,8 @@ extern "C" {
  * Method:    sayHello
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_JniSample_Monte (JNIEnv *env, jobject obj, jint num_rand, jint num_repeat);
-JNIEXPORT jdouble JNICALL Java_JniSample_Bench (JNIEnv *env, jobject obj, jint num);
+JNIEXPORT jint JNICALL Java_JniGo_Monte (JNIEnv *env, jobject obj, jint num_rand, jint num_repeat);
+JNIEXPORT jdouble JNICALL Java_JniGo_Bench (JNIEnv *env, jobject obj, jint num);
 
 void test01 ( int n );
 double test02 ( int n );

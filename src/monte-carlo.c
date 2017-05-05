@@ -11,10 +11,12 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/time.h>
-#include <openssl/rand.h>
+//#include <openssl/rand.h>
 
-#define NUM_RAND 1000000
-#define NUM_REPEAT 1
+#define NUM_RAND 10000000
+#define NUM_REPEAT 30
+
+unsigned long long rdtsc();
 
 int main(int argc, char **argv)
 {
@@ -34,39 +36,44 @@ int main(int argc, char **argv)
     double radius;
     double rand_double_A, rand_double_B;
     double pi_result;
+    int truerand;
 
     /* Measure runtime */
     double totaltime = 0;
     struct timeval  tv1, tv2;
     gettimeofday(&tv1, NULL);
 
-    // printf("numthreads: %d\n",numthreads);
     for (i=0; i<numthreads; i++) {
         count[i] = 0;
     }
 
 	for (j=0; j<NUM_REPEAT; j++) {
-      #pragma omp parallel private(my_cpu_id)
+      #pragma omp parallel private(i, my_cpu_id, randInts_A, randInts_B, radius, rand_double_A, rand_double_B)
       {
         #ifdef _OPENMP
         my_cpu_id=omp_get_thread_num();
+		//generate random seed
+		truerand = rdtsc();
+        srandom((int)(time(NULL)) ^ my_cpu_id + truerand);
         #else
         my_cpu_id=0;
         #endif
         
         #pragma omp for
         for(i=1; i<NUM_RAND; i++) {
- 
+			
 		/* One way to get random integers -- full range */
-		if( !(RAND_bytes((unsigned char *)randInts_A,sizeof(randInts_A)))) {
+		/*if( !(RAND_bytes((unsigned char *)randInts_A,sizeof(randInts_A)))) {
 		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
 		exit(1);
 		}
-		if( !(RAND_bytes((unsigned char *)randInts_B, sizeof(randInts_B)))) {
+		if( !(RAND_bytes((unsigned char *)randInts_B,sizeof(randInts_B)))) {
 		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
 		exit(1);
-		}
-
+		}*/
+		
+		randInts_A[0] = random();
+		randInts_B[0] = random();
         rand_double_A = randInts_A[0] / (double)INT_MAX;
         rand_double_B = randInts_B[0] / (double)INT_MAX;
 
@@ -90,4 +97,10 @@ int main(int argc, char **argv)
     printf("calculated PI: %lf\n", pi_result);
 
 return 0;
+}
+
+unsigned long long rdtsc(){
+    unsigned int lo,hi;
+    __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
+    return ((unsigned long long)hi << 32) | lo;
 }

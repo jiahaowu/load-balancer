@@ -1,6 +1,6 @@
 #include "JniSample.h"
 
-JNIEXPORT jint JNICALL Java_JniSample_Monte (JNIEnv *env, jobject obj, jint num_rand, jint num_repeat) {
+JNIEXPORT jint JNICALL Java_JniGo_Monte (JNIEnv *env, jobject obj, jint num_rand, jint num_repeat) {
 
     int my_cpu_id,numthreads;
     
@@ -71,7 +71,7 @@ JNIEXPORT jint JNICALL Java_JniSample_Monte (JNIEnv *env, jobject obj, jint num_
 // Reference: Reference:
 // https://people.sc.fsu.edu/~jburkardt/c_src/sgefa_openmp/sgefa_openmp.html
 
-JNIEXPORT jdouble JNICALL Java_JniSample_Bench (JNIEnv *env, jobject obj, jint n) {
+JNIEXPORT jdouble JNICALL Java_JniGo_Bench (JNIEnv *env, jobject obj, jint n) {
 
   //timestamp ( );
   double bench_result = test02(n);

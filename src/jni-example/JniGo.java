@@ -1,4 +1,4 @@
-public class JniSample {
+public class JniGo {
    
    static {
       System.loadLibrary("JniSample");
@@ -11,8 +11,8 @@ public class JniSample {
         int num_rand = 10000;
         int num_repeat = 3;
 
-        int count_total = new JniSample().Monte(num_rand,num_repeat);
-        double bench_result = new JniSample().Bench(1000);
+        int count_total = new JniGo().Monte(num_rand,num_repeat);
+        double bench_result = new JniGo().Bench(1000);
 
         double pi_result = count_total /(double) num_rand / num_repeat * 4 ;
 

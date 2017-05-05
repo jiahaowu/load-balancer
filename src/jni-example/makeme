@@ -1,5 +1,5 @@
 # Compile Java code
-javac JniSample.java
+javac JniGo.java
 
 # Create the header file: it generate header file.
 #javah JniSample

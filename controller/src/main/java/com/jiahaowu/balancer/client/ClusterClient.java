@@ -139,7 +139,7 @@ public class ClusterClient {
         int result = taskPi.simulation(response.getNumRand(), response.getNumRepeat());
         //int result = (int)(response.getNumRand() * 3.14);
         if(response.getNumRand() != 0) {
-            System.out.println("Current pi: " + ((double) result) / (double) response.getNumRand());
+            System.out.println("Current Batch: " + (4 * (double) result) / (double) response.getNumRand());
         }
         CommitRequest commit = CommitRequest.newBuilder().setCount(result).setTotal(response.getNumRand()).build();
         CommitResponse commitResponse = stub.commitTask(commit);

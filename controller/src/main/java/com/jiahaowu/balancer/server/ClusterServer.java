@@ -24,12 +24,13 @@ public class ClusterServer {
     private static Integer pendingNumber;
     private static Integer batchSize;
     private Integer serverPort;
+
     public ClusterServer(Integer port) {
         serverPort = port;
         clusterBuilder = Cluster.newBuilder();
         clientTimeout = new HashMap<>();
         computingPower = 0.0;
-        batchSize = 10000;
+        batchSize = 100000;
         processedTotal = 0;
         validCount = 0;
     }
@@ -129,10 +130,10 @@ public class ClusterServer {
         long start = System.currentTimeMillis();
         while (true) {
             long end = System.currentTimeMillis();
-            System.out.println("Time " + ((end - start) / 1000) + " seconds, Computing Power = " + computingPower);
+            System.out.println("Time " + ((end - start) / 1000) + " seconds, Computing Power = " + (int) (100 * computingPower));
             System.out.println(getClientList());
 
-            if(processedTotal != 0) {
+            if (processedTotal != 0) {
                 System.out.println("Current pi: " + (4 * (double) validCount) / (double) processedTotal);
             }
 
@@ -149,12 +150,12 @@ public class ClusterServer {
                     removeClient(ip);
                 }
             }
-            if(pendingNumber == 0) {
+            if (pendingNumber == 0) {
                 System.out.println("Computation Complete");
                 break;
             }
         }
-        if(processedTotal != 0) {
+        if (processedTotal != 0) {
             System.out.println("Current pi: " + (4 * (double) validCount) / (double) processedTotal);
         }
         server.awaitTermination();

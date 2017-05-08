@@ -4,6 +4,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.jiahaowu.balancer.client.ClusterClient;
 import com.jiahaowu.balancer.server.ClusterServer;
+import com.sun.tools.corba.se.idl.InterfaceGen;
 
 import java.io.IOException;
 
@@ -30,6 +31,9 @@ public class Launcher {
     @Parameter(names = {"-n", "--num"}, description = "Number of Simulations")
     private Integer simulationNum = 1000000;
 
+    @Parameter(names = {"-p","--performance"}, description = "Override client performance parameter")
+    private Double performance = -1.0;
+
     private ClusterClient clusterClient;
     private ClusterServer clusterServer;
 
@@ -55,8 +59,11 @@ public class Launcher {
 
         } else if (main.state.equals(STATS[1])) {
             // Launcher starts the clusterClient mode
-            main.clusterClient = new ClusterClient(main.serverAddr, main.port);
-
+            if(main.performance < 0) {
+                main.clusterClient = new ClusterClient(main.serverAddr, main.port);
+            } else {
+                main.clusterClient = new ClusterClient(main.serverAddr, main.port, main.performance);
+            }
             main.clusterClient.start();
             main.clusterClient.shutdown();
         }

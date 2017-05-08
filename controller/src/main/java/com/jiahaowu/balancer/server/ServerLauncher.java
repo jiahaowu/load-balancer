@@ -15,7 +15,7 @@ public class ServerLauncher {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         ClusterServer cserv = new ClusterServer(SERVER_PORT);
-        cserv.setSimulationNumber(10000000);
+        cserv.setSimulationNumber(1000000000);
         cserv.start();
     }
 }

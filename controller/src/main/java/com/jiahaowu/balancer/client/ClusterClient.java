@@ -32,6 +32,17 @@ public class ClusterClient {
         this.serverPort = port;
         TaskBench bench = new TaskBench();
         this.performance = bench.benchmark();
+        initialize();
+    }
+
+    public ClusterClient(String serverAddr, Integer port, Double performance) {
+        this.serverAddr = serverAddr;
+        this.serverPort = port;
+        this.performance = performance;
+        initialize();
+    }
+
+    private void initialize() {
         String ip = "";
         try {
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();

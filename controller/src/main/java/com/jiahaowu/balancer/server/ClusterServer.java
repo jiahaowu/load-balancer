@@ -211,10 +211,10 @@ public class ClusterServer {
                 int processed = -1;
                 int valid = -1;
                 if (scanner.hasNext()) {
-                    processed = scanner.nextInt();
+                    valid = scanner.nextInt();
                 }
                 if (scanner.hasNext()) {
-                    valid = scanner.nextInt();
+                    processed = scanner.nextInt();
                 }
                 if(processed == -1 || valid == -1) {
                     System.out.println("Log file is NOT complete, starts from the beginning");

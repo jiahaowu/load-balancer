@@ -65,7 +65,7 @@ JNIEXPORT jdouble JNICALL Java_JniGo_Bench (JNIEnv *env, jobject obj, jint num_r
     
     bench_score = 1/ totaltime * 10;
     
-    return totaltime;
+    return bench_score;
 }
 
 unsigned long long rdtsc(){

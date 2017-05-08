@@ -3,6 +3,8 @@ package com.jiahaowu.balancer.server;
 import com.jiahaowu.balancer.protocol.*;
 import io.grpc.stub.StreamObserver;
 
+import java.sql.Time;
+
 /**
  * Created by jiahao on 5/1/17.
  */
@@ -31,11 +33,13 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
         JoinResponse.Builder responseBuilder = JoinResponse.newBuilder();
         if (ClusterServer.getClusterBuilder().getNodeListCount() == 1) {
             responseBuilder.setNodeCount(ClusterServer.getClusterBuilder().getNodeListCount()).setIsBackup(true);
-            ClusterServer.setInstrumentationStart(System.currentTimeMillis());
         } else {
             responseBuilder.setNodeCount(ClusterServer.getClusterBuilder().getNodeListCount()).setIsBackup(false);
         }
 
+        if(ClusterServer.getClusterBuilder().getNodeListCount()>=4) {
+            ClusterServer.setInstrumentationStart(System.currentTimeMillis());
+        }
         responseObserver.onNext(responseBuilder.build());
         responseObserver.onCompleted();
     }
@@ -72,6 +76,13 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
         //System.out.println("Batch = " + batch);
 
         TaskResponse.Builder taskBuilder = TaskResponse.newBuilder();
+        while(ClusterServer.getClusterBuilder().getNodeListCount()<4) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         if (pending > 0) {
             assignNumber = Math.min(pending, batch);
             ClusterServer.setPendingNumber(pending - assignNumber);

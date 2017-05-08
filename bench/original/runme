@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./sgefa_openmp.exe

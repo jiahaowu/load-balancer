@@ -1,1 +1,1 @@
-rm -f  sgefa_openmp.exe
+rm -f  monte_bench.exe

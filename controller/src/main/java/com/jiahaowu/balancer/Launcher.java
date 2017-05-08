@@ -30,7 +30,7 @@ public class Launcher {
     @Parameter(names = {"-n", "--num"}, description = "Number of Simulations")
     private Integer simulationNum = 1000000;
 
-    @Parameter(names = {"-p","--performance"}, description = "Override client performance parameter")
+    @Parameter(names = {"-e","--performance"}, description = "Override client performance parameter")
     private Double performance = -1.0;
 
     private ClusterClient clusterClient;

@@ -161,7 +161,7 @@ public class ClusterServer {
                     removeClient(ip);
                 }
             }
-            if (pendingNumber == 0) {
+            if (simulationNumber == processedTotal) {
                 System.out.println("Computation Complete");
                 break;
             }

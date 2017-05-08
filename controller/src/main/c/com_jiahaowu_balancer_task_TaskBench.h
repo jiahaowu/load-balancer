@@ -32,6 +32,11 @@ void test01 ( int n );
 double test02 ( int n );
 void test03 ( int n );
 
+JNIEXPORT jdouble JNICALL Java_com_jiahaowu_balancer_task_TaskBench_Bench2 (JNIEnv *env, jobject obj, jint num_rand, jint num_repeat);
+
+unsigned long long rdtsc();
+
+
 
 #ifdef __cplusplus
 }

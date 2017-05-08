@@ -33,6 +33,9 @@ public class Launcher {
     @Parameter(names = {"-e","--performance"}, description = "Override client performance parameter")
     private Double performance = -1.0;
 
+    @Parameter(names = {"-b", "--batch"}, description = "Set batch size")
+    private Integer batchSize = -1;
+
     private ClusterClient clusterClient;
     private ClusterServer clusterServer;
 
@@ -50,6 +53,9 @@ public class Launcher {
             main.clusterServer = new ClusterServer(main.port);
             main.clusterServer.setSimulationNumber(main.simulationNum);
             main.clusterServer.checkSavedState();
+            if(main.batchSize != -1) {
+                ClusterServer.setBatchSize(main.batchSize);
+            }
 
             try {
                 main.clusterServer.start();

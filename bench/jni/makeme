@@ -1,0 +1,21 @@
+# Compile Java code
+javac JniGo.java
+
+# Create the header file: it generate header file.
+#javah JinGo
+
+# Based on this generated header file, we can make JniSample.c
+# Then, make library using this.
+
+unamestr=`uname`
+# gcc -fopenmp -o monte-carlo.exe monte-carlo.c -lm -lcrypto -lssl
+
+if [[ "$unamestr" == 'Linux' ]]; then
+	gcc -fopenmp -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/linux -I. -o ./libJniBench.so ./JniBench.c -lm
+elif [[ "$unamestr" == 'Darwin' ]]; then
+   gcc-6 -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib \
+   -fopenmp -fPIC -shared -I$JAVA_HOME/include -I$JAVA_HOME/include/darwin \
+   -I. -o ./libJniBench.dylib ./JniBench.c -lm
+fi
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.

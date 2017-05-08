@@ -2,7 +2,6 @@ package com.jiahaowu.balancer.server;
 
 import com.jiahaowu.balancer.protocol.Cluster;
 import com.jiahaowu.balancer.protocol.ComputingNode;
-import com.sun.tools.corba.se.idl.InterfaceGen;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 

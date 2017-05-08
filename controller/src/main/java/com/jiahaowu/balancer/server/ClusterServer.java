@@ -20,6 +20,12 @@ public class ClusterServer {
     private static Integer processedTotal;
     private static Integer pendingNumber;
     private static Integer batchSize;
+
+    public static void setInstrumentationStart(long instrumentationStart) {
+        ClusterServer.instrumentationStart = instrumentationStart;
+    }
+
+    private static long instrumentationStart;
     private Integer serverPort;
 
     public ClusterServer(Integer port) {
@@ -163,7 +169,7 @@ public class ClusterServer {
         if (processedTotal != 0) {
             System.out.println("Result pi = " + (4 * (double) validCount) / (double) processedTotal);
             long end = System.currentTimeMillis();
-            System.out.println("Runtime = " + (end - start)/1000.0 + " s");
+            System.out.println("Runtime = " + (end - instrumentationStart)/1000.0 + " s");
         }
         sb.setLength(0);
         sb.append(-1).append('\n');

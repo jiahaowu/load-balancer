@@ -85,6 +85,7 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
         }
         if (pending > 0) {
             assignNumber = Math.min(pending, batch);
+            ClusterServer.working++;
             ClusterServer.setPendingNumber(pending - assignNumber);
             taskBuilder.setDone(false);
             taskBuilder.setPause(false);
@@ -100,6 +101,7 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
     public void commitTask(CommitRequest request, StreamObserver<CommitResponse> responseObserver) {
         int validCount = request.getCount();
         int total = request.getTotal();
+        ClusterServer.working--;
         ClusterServer.setValidCount(ClusterServer.getValidCount() + validCount);
         ClusterServer.setProcessedTotal(ClusterServer.getProcessedTotal() + total);
         responseObserver.onNext(CommitResponse.newBuilder().setFlag(true).build());

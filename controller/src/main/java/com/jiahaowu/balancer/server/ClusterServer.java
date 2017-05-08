@@ -2,6 +2,7 @@ package com.jiahaowu.balancer.server;
 
 import com.jiahaowu.balancer.protocol.Cluster;
 import com.jiahaowu.balancer.protocol.ComputingNode;
+import com.sun.tools.corba.se.idl.InterfaceGen;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
@@ -20,6 +21,7 @@ public class ClusterServer {
     private static Integer processedTotal;
     private static Integer pendingNumber;
     private static Integer batchSize;
+    public static Integer working = 0;
 
     public static void setInstrumentationStart(long instrumentationStart) {
         ClusterServer.instrumentationStart = instrumentationStart;
@@ -161,10 +163,14 @@ public class ClusterServer {
                     removeClient(ip);
                 }
             }
-            if (processedTotal == simulationNumber) {
+            if (0 == pendingNumber) {
                 System.out.println("Computation Complete");
                 break;
             }
+        }
+        while(working != 0) {
+            Thread.sleep(1000);
+            System.out.println("Waiting for worker complete");
         }
         if (processedTotal != 0) {
             System.out.println("Result pi = " + (4 * (double) validCount) / (double) processedTotal);

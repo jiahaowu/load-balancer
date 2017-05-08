@@ -21,6 +21,20 @@ public class ClusterServer {
     private static Integer pendingNumber;
     private static Integer batchSize;
 
+    public static void incPendingWorker() {
+        synchronized (pendingWorker) {
+            pendingWorker += 1;
+        }
+    }
+
+    public static void decPendingWorker() {
+        synchronized (pendingWorker) {
+            pendingWorker -= 1;
+        }
+    }
+
+    private static Integer pendingWorker = 0;
+
     public static void setInstrumentationStart(long instrumentationStart) {
         ClusterServer.instrumentationStart = instrumentationStart;
     }
@@ -161,15 +175,19 @@ public class ClusterServer {
                     removeClient(ip);
                 }
             }
-            if (simulationNumber == processedTotal) {
-                System.out.println("Computation Complete");
+            if (0 == pendingNumber) {
+                System.out.println("Assignment Complete");
                 break;
             }
+        }
+        while (pendingWorker != 0) {
+            Thread.sleep(1000);
+            System.out.println("Waiting for client to complete assignment");
         }
         if (processedTotal != 0) {
             System.out.println("Result pi = " + (4 * (double) validCount) / (double) processedTotal);
             long end = System.currentTimeMillis();
-            System.out.println("Runtime = " + (end - instrumentationStart)/1000.0 + " s");
+            System.out.println("Runtime = " + (end - instrumentationStart) / 1000.0 + " s");
         }
         sb.setLength(0);
         sb.append(-1).append('\n');
@@ -210,7 +228,7 @@ public class ClusterServer {
             if (scanner.hasNext()) {
                 state = scanner.nextInt();
             }
-            if(state <= 0) {
+            if (state <= 0) {
                 System.out.println("Starts from the beginning");
             } else {
                 System.out.println("Total number = " + state);
@@ -222,7 +240,7 @@ public class ClusterServer {
                 if (scanner.hasNext()) {
                     processed = scanner.nextInt();
                 }
-                if(processed == -1 || valid == -1) {
+                if (processed == -1 || valid == -1) {
                     System.out.println("Log file is NOT complete, starts from the beginning");
                 } else {
                     setValidCount(valid);

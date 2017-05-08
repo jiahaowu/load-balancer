@@ -5,11 +5,8 @@ import com.jiahaowu.balancer.protocol.ComputingNode;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 /**
  * Created by jiahao on 5/1/17.
@@ -123,6 +120,7 @@ public class ClusterServer {
         Server server = ServerBuilder.forPort(serverPort)
                 .addService(new Connection())
                 .build();
+        StringBuilder sb = new StringBuilder();
         pendingNumber = simulationNumber;
 
         server.start();
@@ -144,6 +142,13 @@ public class ClusterServer {
                 Thread.currentThread().interrupt();
                 break;
             }
+            // write log file
+            sb.setLength(0);
+            sb.append(getSimulationNumber()).append('\n')
+                    .append(getValidCount()).append('\n')
+                    .append(getProcessedTotal()).append('\n');
+            writeLog(sb.toString());
+
             for (String ip : clientTimeout.keySet()) {
                 clientTimeout.put(ip, clientTimeout.get(ip) - 1000);
                 if (clientTimeout.get(ip) < 0) {
@@ -156,9 +161,21 @@ public class ClusterServer {
             }
         }
         if (processedTotal != 0) {
-            System.out.println("Current pi: " + (4 * (double) validCount) / (double) processedTotal);
+            System.out.println("Result pi = " + (4 * (double) validCount) / (double) processedTotal);
+            long end = System.currentTimeMillis();
+            System.out.println("Runtime = " + (end - start)/1000.0 + " s");
         }
+        sb.setLength(0);
+        sb.append(-1).append('\n');
+        writeLog(sb.toString());
         server.awaitTermination();
+    }
+
+    private void writeLog(String log) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter("server.log"));
+        writer.write(log);
+        writer.close();
+
     }
 
     private void removeClient(String ip) {
@@ -178,5 +195,39 @@ public class ClusterServer {
             ips.add(n.getIpAddr());
         }
         return ips;
+    }
+
+    public void checkSavedState() {
+        try {
+            Scanner scanner = new Scanner(new FileReader("server.log"));
+            int state = -1;
+            if (scanner.hasNext()) {
+                state = scanner.nextInt();
+            }
+            if(state <= 0) {
+                System.out.println("Starts from the beginning");
+            } else {
+                System.out.println("Total number = " + state);
+                int processed = -1;
+                int valid = -1;
+                if (scanner.hasNext()) {
+                    processed = scanner.nextInt();
+                }
+                if (scanner.hasNext()) {
+                    valid = scanner.nextInt();
+                }
+                if(processed == -1 || valid == -1) {
+                    System.out.println("Log file is NOT complete, starts from the beginning");
+                } else {
+                    setValidCount(valid);
+                    setProcessedTotal(processed);
+                    setPendingNumber(state - processed);
+                    setSimulationNumber(state);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Log file not found, starts from the beginning");
+        }
+
     }
 }

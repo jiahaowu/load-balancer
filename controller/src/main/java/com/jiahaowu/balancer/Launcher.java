@@ -50,6 +50,7 @@ public class Launcher {
             // Launcher starts the clusterServer mode
             main.clusterServer = new ClusterServer(main.port);
             main.clusterServer.setSimulationNumber(main.simulationNum);
+            main.clusterServer.checkSavedState();
 
             try {
                 main.clusterServer.start();

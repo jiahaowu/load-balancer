@@ -1,0 +1,72 @@
+1 machine 1000000000 
+average runtime is 139.884542
+calculated PI: 3.141519
+
+
+4 clients 1000000000 batch number 10000
+Result pi = 3.140354212987237
+Runtime = 231.117 s
+
+
+4 clients 1000000000 batch number 100000
+Result pi = 3.1408335770076117
+Runtime = 96.284 s
+Result pi = 3.1412449812388092
+Runtime = 96.565 s
+Result pi = 3.1411086426280668
+Runtime = 96.552 s
+Result pi = 3.1408624398046383
+Runtime = 98.924 s
+Result pi = 3.1416931526987084
+Runtime = 98.426 s
+
+
+
+4 clients 1000000000 batch number 1000000
+Result pi = 3.1418133438857923
+Runtime = 75.215 s
+Result pi = 3.140698798006802
+Runtime = 75.31 s
+Result pi = 3.141545940013669
+Runtime = 76.399 s
+Result pi = 3.1411100011873216
+Runtime = 75.906 s
+Result pi = 3.1414283382284576
+Runtime = 76.547 s
+
+
+
+4 clients 1000000000 batch number 10000000
+Result pi = 3.1415930557289484
+Runtime = 73.885 s
+Result pi = 3.141607661735757
+Runtime = 74.53 s
+Result pi = 3.1416350197436227
+Runtime = 74.756 s
+Result pi = 3.141649121835671
+Runtime = 73.971 s
+Result pi = 3.14150178
+Runtime = 74.884 s
+
+
+
+4 clients 1000000000 batch number 100000000
+Result pi = 3.1416940039467107
+Runtime = 71.503 s
+Result pi = 3.1416415120684182
+Runtime = 71.471 s
+Result pi = 3.141590712538948
+Runtime = 71.266 s
+Result pi = 3.1415975766279263
+Runtime = 70.82 s
+esult pi = 3.141528404345882
+Runtime = 70.099 s
+
+
+
+4 clients 1000000000 batch number 1000000000
+Result pi = -3.1881574361671583
+Runtime = 303.816 s
+
+
+

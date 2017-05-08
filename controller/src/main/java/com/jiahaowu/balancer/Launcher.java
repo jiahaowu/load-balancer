@@ -4,7 +4,6 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.jiahaowu.balancer.client.ClusterClient;
 import com.jiahaowu.balancer.server.ClusterServer;
-import com.sun.tools.corba.se.idl.InterfaceGen;
 
 import java.io.IOException;
 

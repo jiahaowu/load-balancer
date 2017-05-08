@@ -172,6 +172,9 @@ public class ClusterServer {
             System.out.println("Waiting for worker complete");
         }
         if (processedTotal != 0) {
+            System.out.println("==== DEBUG ====");
+            System.out.println(ClusterServer.getValidCount());
+            System.out.println(ClusterServer.getProcessedTotal());
             System.out.println("Result pi = " + (4 * (double) validCount) / (double) processedTotal);
             long end = System.currentTimeMillis();
             System.out.println("Runtime = " + (end - instrumentationStart)/1000.0 + " s");

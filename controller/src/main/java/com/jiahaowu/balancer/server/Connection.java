@@ -104,6 +104,8 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
         ClusterServer.working--;
         ClusterServer.setValidCount(ClusterServer.getValidCount() + validCount);
         ClusterServer.setProcessedTotal(ClusterServer.getProcessedTotal() + total);
+        System.out.println(ClusterServer.getValidCount());
+        System.out.println(ClusterServer.getProcessedTotal());
         responseObserver.onNext(CommitResponse.newBuilder().setFlag(true).build());
         responseObserver.onCompleted();
     }

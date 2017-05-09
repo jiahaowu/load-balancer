@@ -13,7 +13,7 @@
 #include <sys/time.h>
 //#include <openssl/rand.h>
 
-#define NUM_RAND 20000000
+#define NUM_RAND 10000000
 #define NUM_REPEAT 30
 
 unsigned long long rdtsc();
@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 		truerand = rdtsc();
         // printf("cpu-[%d]:%d\n",my_cpu_id,truerand * (my_cpu_id+5));
         // srandom((int)(time(NULL)) ^ my_cpu_id + truerand*my_cpu_id);
-        srandom(truerand * (my_cpu_id+5));
+        if (j==0) srandom(truerand * (my_cpu_id+5));
         //printf("cpu-[%d]:%d\n", my_cpu_id,(int)(time(NULL)) ^ my_cpu_id + truerand*my_cpu_id);
         #else
         my_cpu_id=0;
@@ -75,8 +75,8 @@ int main(int argc, char **argv)
 		exit(1);
 		}*/
 		
-		randInts_A[0] = random();
-		randInts_B[0] = random();
+		randInts_A[0] = (double) random();
+		randInts_B[0] = (double) random();
         rand_double_A = randInts_A[0] / (double)INT_MAX;
         rand_double_B = randInts_B[0] / (double)INT_MAX;
 
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
             (double) (tv2.tv_sec - tv1.tv_sec);
     printf("average runtime is %lf\n",totaltime);
 
-    pi_result = count_total /(double) NUM_RAND * 4 / NUM_REPEAT;
+    pi_result = (double) count_total /(double) NUM_RAND * 4 / NUM_REPEAT;
     printf("calculated PI: %lf\n", pi_result);
 
 return 0;

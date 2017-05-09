@@ -13,7 +13,7 @@
 #include <sys/time.h>
 //#include <openssl/rand.h>
 
-#define NUM_RAND 10000000
+#define NUM_RAND 20000000
 #define NUM_REPEAT 30
 
 unsigned long long rdtsc();
@@ -54,7 +54,10 @@ int main(int argc, char **argv)
         my_cpu_id=omp_get_thread_num();
 		//generate random seed
 		truerand = rdtsc();
-        srandom((int)(time(NULL)) ^ my_cpu_id + truerand);
+        // printf("cpu-[%d]:%d\n",my_cpu_id,truerand * (my_cpu_id+5));
+        // srandom((int)(time(NULL)) ^ my_cpu_id + truerand*my_cpu_id);
+        srandom(truerand * (my_cpu_id+5));
+        //printf("cpu-[%d]:%d\n", my_cpu_id,(int)(time(NULL)) ^ my_cpu_id + truerand*my_cpu_id);
         #else
         my_cpu_id=0;
         #endif

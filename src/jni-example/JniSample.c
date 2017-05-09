@@ -34,7 +34,7 @@ JNIEXPORT jint JNICALL Java_JniGo_Monte (JNIEnv *env, jobject obj, jint num_rand
         #ifdef _OPENMP
         my_cpu_id=omp_get_thread_num();
         truerand = rdtsc();
-        srandom(truerand * (my_cpu_id+5));
+        if (j==0) srandom(truerand * (my_cpu_id+5));
         #else
         my_cpu_id=0;
         #endif
@@ -42,13 +42,14 @@ JNIEXPORT jint JNICALL Java_JniGo_Monte (JNIEnv *env, jobject obj, jint num_rand
         #pragma omp for
         for(i=1; i<num_rand; i++) {
         
-        randInts_A[0] = random();
-        randInts_B[0] = random();
+        randInts_A[0] = (double) random();
+        randInts_B[0] = (double) random();
         rand_double_A = randInts_A[0] / (double)INT_MAX;
         rand_double_B = randInts_B[0] / (double)INT_MAX;
 
         radius = rand_double_A * rand_double_A + rand_double_B *rand_double_B;
         if (radius <= 1) count[my_cpu_id]++;
+
         }
       }
     }

@@ -54,11 +54,11 @@ int main(int argc, char **argv)
         my_cpu_id=omp_get_thread_num();
 		
         //generate random seed
-		//if (j%1000 == 0) {
+		if (j%1000 == 0) {
             truerand = rdtsc();
             // init_genrand64(truerand * (my_cpu_id+5));
             srandom(truerand * (my_cpu_id+5));
-        //}
+        }
         #else
         my_cpu_id=0;
         #endif

@@ -11,10 +11,12 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/time.h>
-#include <openssl/rand.h>
+//#include <openssl/rand.h>
 
-#define num_rand 1000000
-#define num_repeat 1
+#define NUM_RAND 10000000
+#define NUM_REPEAT 30
+
+unsigned long long rdtsc();
 
 int main(int argc, char **argv)
 {
@@ -34,39 +36,47 @@ int main(int argc, char **argv)
     double radius;
     double rand_double_A, rand_double_B;
     double pi_result;
+    int truerand;
 
     /* Measure runtime */
     double totaltime = 0;
     struct timeval  tv1, tv2;
     gettimeofday(&tv1, NULL);
 
-    // printf("numthreads: %d\n",numthreads);
     for (i=0; i<numthreads; i++) {
         count[i] = 0;
     }
 
-	for (j=0; j<num_repeat; j++) {
-      #pragma omp parallel private(my_cpu_id)
+	for (j=0; j<NUM_REPEAT; j++) {
+      #pragma omp parallel private(i, my_cpu_id, randInts_A, randInts_B, radius, rand_double_A, rand_double_B)
       {
         #ifdef _OPENMP
         my_cpu_id=omp_get_thread_num();
+		//generate random seed
+		truerand = rdtsc();
+        // printf("cpu-[%d]:%d\n",my_cpu_id,truerand * (my_cpu_id+5));
+        // srandom((int)(time(NULL)) ^ my_cpu_id + truerand*my_cpu_id);
+        srandom(truerand * (my_cpu_id+5));
+        //printf("cpu-[%d]:%d\n", my_cpu_id,(int)(time(NULL)) ^ my_cpu_id + truerand*my_cpu_id);
         #else
         my_cpu_id=0;
         #endif
         
         #pragma omp for
-        for(i=1; i<num_rand; i++) {
- 
+        for(i=1; i<NUM_RAND; i++) {
+			
 		/* One way to get random integers -- full range */
-		if( !(RAND_bytes((unsigned char *)randInts_A,sizeof(randInts_A)))) {
+		/*if( !(RAND_bytes((unsigned char *)randInts_A,sizeof(randInts_A)))) {
 		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
 		exit(1);
 		}
-		if( !(RAND_bytes((unsigned char *)randInts_B, sizeof(randInts_B)))) {
+		if( !(RAND_bytes((unsigned char *)randInts_B,sizeof(randInts_B)))) {
 		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
 		exit(1);
-		}
-
+		}*/
+		
+		randInts_A[0] = (double) random();
+		randInts_B[0] = (double) random();
         rand_double_A = randInts_A[0] / (double)INT_MAX;
         rand_double_B = randInts_B[0] / (double)INT_MAX;
 
@@ -86,8 +96,14 @@ int main(int argc, char **argv)
             (double) (tv2.tv_sec - tv1.tv_sec);
     printf("average runtime is %lf\n",totaltime);
 
-    pi_result = count_total /(double) num_rand * 4 / num_repeat;
+    pi_result = (double) count_total /(double) NUM_RAND * 4 / NUM_REPEAT;
     printf("calculated PI: %lf\n", pi_result);
 
 return 0;
+}
+
+unsigned long long rdtsc(){
+    unsigned int lo,hi;
+    __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
+    return ((unsigned long long)hi << 32) | lo;
 }

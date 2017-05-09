@@ -2,8 +2,8 @@
 
 JNIEXPORT jint JNICALL Java_JniGo_Monte (JNIEnv *env, jobject obj, jint num_rand, jint num_repeat) {
 
-    int my_cpu_id,numthreads;
-    
+   int my_cpu_id,numthreads;
+
     #ifdef _OPENMP
     numthreads=omp_get_max_threads();
     #else
@@ -33,8 +33,13 @@ JNIEXPORT jint JNICALL Java_JniGo_Monte (JNIEnv *env, jobject obj, jint num_rand
       {
         #ifdef _OPENMP
         my_cpu_id=omp_get_thread_num();
-        truerand = rdtsc();
-        srandom(truerand * (my_cpu_id+5));
+        
+        //generate random seed
+        if (j%1000 == 0) {
+            truerand = rdtsc();
+            // init_genrand64(truerand * (my_cpu_id+5));
+            srandom(truerand * (my_cpu_id+5));
+        }
         #else
         my_cpu_id=0;
         #endif
@@ -47,9 +52,10 @@ JNIEXPORT jint JNICALL Java_JniGo_Monte (JNIEnv *env, jobject obj, jint num_rand
         rand_double_A = randInts_A[0] / (double)INT_MAX;
         rand_double_B = randInts_B[0] / (double)INT_MAX;
 
+
         radius = rand_double_A * rand_double_A + rand_double_B *rand_double_B;
         if (radius <= 1) count[my_cpu_id]++;
-
+        //printf("Random Integer: %d, Random double: %lf\n", randInt, rand_double);
         }
       }
     }

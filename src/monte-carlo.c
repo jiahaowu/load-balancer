@@ -1,5 +1,5 @@
-// Random Generator Reference
-// https://www.mitchr.me/SS/exampleCode/random/opensslPRandEx.c.html
+// Random Generator: C-program for MT19937-64
+// http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/VERSIONS/C-LANG/mt19937-64.c
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,8 +13,8 @@
 #include <sys/time.h>
 //#include <openssl/rand.h>
 
-#define NUM_RAND 10000000
-#define NUM_REPEAT 30
+#define NUM_RAND 30000000
+#define NUM_REPEAT 1
 
 unsigned long long rdtsc();
 
@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 {
 
     int my_cpu_id,numthreads;
-    
+
     #ifdef _OPENMP
     numthreads=omp_get_max_threads();
     #else
@@ -52,33 +52,25 @@ int main(int argc, char **argv)
       {
         #ifdef _OPENMP
         my_cpu_id=omp_get_thread_num();
-		//generate random seed
-		truerand = rdtsc();
-        // printf("cpu-[%d]:%d\n",my_cpu_id,truerand * (my_cpu_id+5));
-        // srandom((int)(time(NULL)) ^ my_cpu_id + truerand*my_cpu_id);
-        if (j==0) srandom(truerand * (my_cpu_id+5));
-        //printf("cpu-[%d]:%d\n", my_cpu_id,(int)(time(NULL)) ^ my_cpu_id + truerand*my_cpu_id);
+		
+        //generate random seed
+		if (j%1000 == 0) {
+            truerand = rdtsc();
+            // init_genrand64(truerand * (my_cpu_id+5));
+            srandom(truerand * (my_cpu_id+5));
+        }
         #else
         my_cpu_id=0;
         #endif
         
         #pragma omp for
         for(i=1; i<NUM_RAND; i++) {
-			
-		/* One way to get random integers -- full range */
-		/*if( !(RAND_bytes((unsigned char *)randInts_A,sizeof(randInts_A)))) {
-		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
-		exit(1);
-		}
-		if( !(RAND_bytes((unsigned char *)randInts_B,sizeof(randInts_B)))) {
-		printf("ERROR: call to RAND_pseudo_bytes() failed\n");
-		exit(1);
-		}*/
 		
-		randInts_A[0] = (double) random();
-		randInts_B[0] = (double) random();
+        randInts_A[0] = (double) random();
+        randInts_B[0] = (double) random();
         rand_double_A = randInts_A[0] / (double)INT_MAX;
         rand_double_B = randInts_B[0] / (double)INT_MAX;
+
 
         radius = rand_double_A * rand_double_A + rand_double_B *rand_double_B;
         if (radius <= 1) count[my_cpu_id]++;

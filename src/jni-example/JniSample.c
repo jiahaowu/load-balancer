@@ -34,7 +34,7 @@ JNIEXPORT jint JNICALL Java_JniGo_Monte (JNIEnv *env, jobject obj, jint num_rand
         #ifdef _OPENMP
         my_cpu_id=omp_get_thread_num();
         truerand = rdtsc();
-        if (j==0) srandom(truerand * (my_cpu_id+5));
+        srandom(truerand * (my_cpu_id+5));
         #else
         my_cpu_id=0;
         #endif

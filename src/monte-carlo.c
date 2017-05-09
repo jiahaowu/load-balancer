@@ -184,8 +184,8 @@ int main(int argc, char **argv)
 		
 		// randInts_A[0] = (double) genrand();
 		// randInts_B[0] = (double) random();
-        rand_double_A = genrand64_real2();
-        rand_double_B = genrand64_real2();
+        rand_double_A = 2*genrand64_real2()-1;
+        rand_double_B = 2*genrand64_real2()-1;
 
         radius = rand_double_A * rand_double_A + rand_double_B *rand_double_B;
         if (radius <= 1) count[my_cpu_id]++;

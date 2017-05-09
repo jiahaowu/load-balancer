@@ -7,7 +7,7 @@ public class JniGo {
     
     public static void main(String[] args) {
 
-        int num_rand = 1000000;
+        int num_rand = 100000000;
         int num_repeat = 3;
 
         int count_total = new JniGo().Monte(num_rand,num_repeat);

@@ -13,7 +13,7 @@
 #include <sys/time.h>
 //#include <openssl/rand.h>
 
-#define NUM_RAND 30000000
+#define NUM_RAND 1000000000
 #define NUM_REPEAT 1
 
 unsigned long long rdtsc();
@@ -36,8 +36,10 @@ int main(int argc, char **argv)
     double radius;
     double rand_double_A, rand_double_B;
     double pi_result;
-    int truerand;
+    int truerandseed1, truerandseed2;
 
+    /*truerandseed1 = rdtsc();
+	truerandseed2 = rdtsc();*/
     /* Measure runtime */
     double totaltime = 0;
     struct timeval  tv1, tv2;
@@ -48,28 +50,30 @@ int main(int argc, char **argv)
     }
 
 	for (j=0; j<NUM_REPEAT; j++) {
-      #pragma omp parallel private(i, my_cpu_id, randInts_A, randInts_B, radius, rand_double_A, rand_double_B)
+      #pragma omp parallel private(i, my_cpu_id, radius, truerandseed1, truerandseed2, randInts_A, randInts_B, rand_double_A, rand_double_B)
       {
         #ifdef _OPENMP
         my_cpu_id=omp_get_thread_num();
 		
+        truerandseed1 = rdtsc();
+		truerandseed2 = rdtsc();
         //generate random seed
-		if (j%1000 == 0) {
-            truerand = rdtsc();
+		//if (j%1000 == 0) {
+            //truerand = rdtsc();
             // init_genrand64(truerand * (my_cpu_id+5));
-            srandom(truerand * (my_cpu_id+5));
-        }
+            //srandom(truerand * (my_cpu_id+5));
+			
+        //}
         #else
         my_cpu_id=0;
         #endif
         
         #pragma omp for
         for(i=1; i<NUM_RAND; i++) {
-		
-        randInts_A[0] = (double) random();
-        randInts_B[0] = (double) random();
-        rand_double_A = randInts_A[0] / (double)INT_MAX;
-        rand_double_B = randInts_B[0] / (double)INT_MAX;
+        randInts_A[0] = (double) rand_r(&truerandseed1);
+        randInts_B[0] = (double) rand_r(&truerandseed2);
+        rand_double_A = randInts_A[0] / (double)RAND_MAX;
+        rand_double_B = randInts_B[0] / (double)RAND_MAX;
 
 
         radius = rand_double_A * rand_double_A + rand_double_B *rand_double_B;

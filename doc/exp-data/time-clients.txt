@@ -10,6 +10,17 @@ Result pi = 3.141612868
 Runtime = 4714 ms
 Result pi = 3.141519448
 Runtime = 5148 ms
+>>>>>>>>>>>>>>>>>
+Result pi = 3.141519448
+Runtime = 5148 ms
+Result pi = 3.141591621981233
+Runtime = 5496 ms
+Result pi = 3.1415747470611866
+Runtime = 5647 ms
+Result pi = 3.141569344
+Runtime = 5008 ms
+Result pi = 3.141479715489946
+Runtime = 5733 ms
 
 3 Clients:1-2-3 -n 1000000000 -b 10000000
 Result pi = 3.141609372
@@ -35,6 +46,19 @@ Result pi = 3.141563
 Runtime = 5965 ms
 Result pi = 3.141499168159204
 Runtime = 5247 ms
+>>>>>>>>>>>>>>>>>
+Result pi = 3.141617248
+Runtime = 5420 ms
+Result pi = 3.14158926
+Runtime = 4768 ms
+Result pi = 3.141639728
+Runtime = 4932 ms
+Result pi = 3.141533012
+Runtime = 5409 ms
+Result pi = 3.141583528
+Runtime = 4730 ms
+
+
 
 
 2 Clients:1-3 -n 1000000000 -b 10000000
@@ -59,6 +83,17 @@ Result pi = 3.141686008
 Runtime = 7246 ms
 Result pi = 3.1415551445544554
 Runtime = 6423 ms
+>>>>>>>>>>>>>>>>>
+Result pi = 3.14158868
+Runtime = 5767 ms
+Result pi = 3.141527824
+Runtime = 7455 ms
+Result pi = 3.1415715597546807
+Runtime = 6621 ms
+Result pi = 3.14153152
+Runtime = 6341 ms
+Result pi = 3.141554184
+Runtime = 6759 ms
 
 
 
@@ -84,6 +119,19 @@ Result pi = 3.14159214
 Runtime = 10290 ms
 Result pi = 3.141463248
 Runtime = 10200 ms
+>>>>>>>>>>>>>>>>>
+Result pi = 3.141483304
+Runtime = 9758 ms
+Result pi = 3.141502356
+Runtime = 10702 ms
+Result pi = 3.141657796
+Runtime = 10502 ms
+Result pi = 3.141490952
+Runtime = 10194 ms
+Result pi = 3.141573744
+Runtime = 10656 ms
+
+
 
 
 1 Clients:1 -n 1000000000 -b 10000000
@@ -92,6 +140,11 @@ Runtime = 242.967 s
 >>>>>>
 Result pi = 3.14163028
 Runtime = 14767 ms
+>>>>>>>>>>>>>>>>>
+Result pi = 3.141461092
+Runtime = 14580 ms
+
+
 
 
 1 Clients:2 -n 1000000000 -b 10000000
@@ -100,6 +153,9 @@ Runtime = 198.092 s
 >>>>>>
 Result pi = 3.141559316
 Runtime = 19571 ms
+>>>>>>>>>>>>>>>>>
+Result pi = 3.141617768
+Runtime = 18792 ms
 
 
 1 Clients:4 -n 1000000000 -b 10000000
@@ -108,3 +164,9 @@ Runtime = 802.866 s
 >>>>>>>
 Result pi = 3.141703684
 Runtime = 85293 ms
+>>>>>>>>>>>>>>>>>
+Result pi = 3.141565708
+Runtime = 84770 ms
+
+
+

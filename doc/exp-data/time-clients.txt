@@ -1,3 +1,16 @@
+>>>>>>>
+4 Clients:1-2-3-4 -n 1000000000 -b 10000000
+Result pi = 3.141542512
+Runtime = 5017 ms
+Result pi = 3.141545493069307
+Runtime = 5114 ms
+Result pi = 3.1415029174129354
+Runtime = 4689 ms
+Result pi = 3.141612868
+Runtime = 4714 ms
+Result pi = 3.141519448
+Runtime = 5148 ms
+
 3 Clients:1-2-3 -n 1000000000 -b 10000000
 Result pi = 3.141609372
 Runtime = 81.1 s

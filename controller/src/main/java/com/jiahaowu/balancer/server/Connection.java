@@ -29,9 +29,11 @@ public class Connection extends ConnectionServiceGrpc.ConnectionServiceImplBase 
         }
 
         JoinResponse.Builder responseBuilder = JoinResponse.newBuilder();
+        if(ClusterServer.getInstrumentationStart()<=0) {
+            ClusterServer.setInstrumentationStart(System.currentTimeMillis());
+        }
         if (ClusterServer.getClusterBuilder().getNodeListCount() == 1) {
             responseBuilder.setNodeCount(ClusterServer.getClusterBuilder().getNodeListCount()).setIsBackup(true);
-            ClusterServer.setInstrumentationStart(System.currentTimeMillis());
         } else {
             responseBuilder.setNodeCount(ClusterServer.getClusterBuilder().getNodeListCount()).setIsBackup(false);
         }

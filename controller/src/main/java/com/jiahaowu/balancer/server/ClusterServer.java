@@ -35,8 +35,12 @@ public class ClusterServer {
 
     private static Integer pendingWorker = 0;
 
-    public static void setInstrumentationStart(long instrumentationStart) {
-        ClusterServer.instrumentationStart = instrumentationStart;
+    public static void setInstrumentationStart(long start) {
+            instrumentationStart = start;
+    }
+
+    public static long getInstrumentationStart() {
+        return instrumentationStart;
     }
 
     private static long instrumentationStart;
@@ -187,7 +191,7 @@ public class ClusterServer {
         if (processedTotal != 0) {
             System.out.println("Result pi = " + (4 * (double) validCount) / (double) processedTotal);
             long end = System.currentTimeMillis();
-            System.out.println("Runtime = " + (end - instrumentationStart) / 1000.0 + " s");
+            System.out.println("Runtime = " + (end - instrumentationStart) + " ms");
         }
         sb.setLength(0);
         sb.append(-1).append('\n');

@@ -14,7 +14,7 @@ public class TaskBench {
     private native double Bench2(int n, int r);
 
     public double benchmark() {
-        //return Bench(1500);
-        return Bench2(10000000, 1);
+        return Bench(1500);
+        //return Bench2(100000, 1);
     }
 }

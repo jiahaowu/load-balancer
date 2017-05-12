@@ -76,7 +76,7 @@ JNIEXPORT jint JNICALL Java_com_jiahaowu_balancer_task_TaskPi_Monte(
     pi_result = (double) count_total /(double) num_rand * 4 / num_repeat;
     printf("calculated PI: %lf\n", pi_result);
 
-return 0;
+return count_total;
 
 }
 

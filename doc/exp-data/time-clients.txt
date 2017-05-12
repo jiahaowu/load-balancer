@@ -93,6 +93,5 @@ Runtime = 19571 ms
 Result pi = 3.14156012
 Runtime = 802.866 s
 >>>>>>>
-Result pi = 3.141502
-Runtime = 10886 ms
-
+Result pi = 3.141703684
+Runtime = 85293 ms
